@@ -1,0 +1,40 @@
+<div>
+  <mat-card style="background-color: darkseagreen ; margin: 50px;">
+    <div>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Search..." [(ngModel)]="searchString" name="search" type="text" autofocus>
+      </mat-form-field>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <th>SL. No.</th>
+        <th>Student Name</th>
+        <th>Due</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let indexOfElement = index ; let item of studentFeesList | filter: searchString | paginate: { itemsPerPage: pageSize, currentPage: p }">
+          <td>{{indexOfElement+1}}</td>
+          <td>{{item.student_name}}</td>
+          <td>{{item.due | currency : "&#8377;"}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+      <!--    https://www.npmjs.com/package/ngx-pagination-->
+      <!--    npm i ngx-pagination-->
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <pagination-controls  id="some_id"
+                            (pageChange)="p=($event)"
+                            maxSize="5"
+                            directionLinks="true"
+                            autoHide="true"
+                            responsive="true"
+                            previousLabel="Previous"
+                            nextLabel="Next"
+                            screenReaderPaginationLabel="Pagination"
+                            screenReaderPageLabel="page"
+                            screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+  </mat-card>
+</div>

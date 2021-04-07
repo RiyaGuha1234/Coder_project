@@ -1,0 +1,55 @@
+<div>
+  <mat-card  fxFlex="60" style="background-color: mediumspringgreen">
+    <table class="table table-hover">
+      <thead>
+        <th>SL.NO></th>
+        <th>Student Name</th>
+        <th>Add Course</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item  of  studentList ; let indexOfElement = index">
+          <td>{{indexOfElement+1}}</td>
+          <td>{{item.student_name}}</td>
+          <td>
+            <button class="btn btn-info" (click)="addCourseToStudent(item)">Add</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card>
+  <mat-card  [hidden]="!showCourses"  fxFlex="30" style="background-color: white ; margin: 20px">
+    <div>
+      <div style="text-align: center">
+        <h3>{{studentName}}</h3>
+      </div>
+      <mat-card style="background-color: wheat; margin: 20px">
+        <table class="table table-hover">
+          <thead>
+          <th>SL No.</th>
+          <th>Course</th>
+          <th>Add</th>
+          <th>Remove</th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of courseList; let indexOfElement =index">
+            <td>{{indexOfElement+1}}</td>
+            <td>{{item.course_name}}</td>
+            <td>
+              <button class="btn" (click)="addCourse(item)" [disabled]="item.isCourseSet"><mat-icon><mat-icon>add_circle</mat-icon></mat-icon></button>
+            </td>
+            <td>
+              <button class="btn" (click)="removeCourse(item)" [disabled]="!item.isCourseSet"><mat-icon>remove_circle</mat-icon></button>
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+        <div style="text-align: center">
+          <button class="btn btn-info" (click)="SubmitCourse()">Submit</button>
+        </div>
+      </mat-card>
+
+    </div>
+
+  </mat-card>
+</div>

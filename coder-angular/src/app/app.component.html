@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutAlign="start none" class="fixVertical">
+  <div fxFlex="1" fxLayout="column" flexLayoutAlign="center center">
+    <app-header [deviceXs]="deviceXs"></app-header>
+  </div>
+  <!--  This is our main working area-->
+  <div class="working-area" fxFlex="1" fxLayout="column" flexLayoutAlign="none none" style="margin-top: 70px; height: 100vh">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!--  Footer-->
+<!--  <footer class="flex-container" fxLayout="row" fxLayoutAlign="center end" id="footer-div">-->
+<!--    this footer should always stick to the bottom of the page-->
+<!--  </footer>-->
+</div>
