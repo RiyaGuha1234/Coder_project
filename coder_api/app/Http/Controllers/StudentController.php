@@ -21,10 +21,14 @@ class StudentController extends Controller
     }
 
     public function saveStudent(Request $request){
+
+//        return $request;
+
         $student = new Student();
         $student->student_name = $request->student_name;
         $student->contact = $request->contact;
         $student->address = $request->address;
+        $student->date = $request->date;
         $student->save();
 
         if($student){
@@ -40,6 +44,9 @@ class StudentController extends Controller
         $student->student_name = $request->student_name;
         $student->contact = $request->contact;
         $student->address = $request->address;
+        if($request->effective_date){
+            $student->effective_date = $request->effective_date;
+        }
         $student->update();
 
         if($student){

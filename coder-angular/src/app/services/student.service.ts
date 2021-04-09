@@ -5,6 +5,7 @@ import {Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../models/course.model';
+import {formatDate} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class StudentService {
   studentData: Student[] = [];
   studentDataSub = new Subject<Student[]>();
   studentForm: FormGroup;
+  currentDate =  new Date();
+  date = formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
 
   studentDataSubUpdateListener(){
     return this.studentDataSub.asObservable();
@@ -29,12 +32,14 @@ export class StudentService {
       student_name : new FormControl(null, [Validators.required]),
       contact : new FormControl('+91', [ Validators.required, Validators.maxLength(15)]),
       address: new FormControl(null),
+      date: new FormControl(this.date),
+      effective_date: new FormControl(null)
     });
 
   }
 
   saveStudentData(){
-    return this.http.post('http://127.0.0.1:8000/api/saveStudent',this.studentForm.value)
+    return this.http.post('http://127.0.0.1:8000/api/saveStudent', this.studentForm.value)
       .pipe( tap((response: {success: number, data: Student})  => {
         this.studentData.unshift(response.data);
         this.studentDataSub.next(this.studentData);

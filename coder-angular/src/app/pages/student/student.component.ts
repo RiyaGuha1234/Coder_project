@@ -5,6 +5,7 @@ import {FormGroup} from '@angular/forms';
 import Swal from 'sweetalert2';
 import {Course} from '../../models/course.model';
 import {StudentToCourseService} from '../../services/student-to-course.service';
+import {formatDate} from '@angular/common';
 
 
 
@@ -29,6 +30,8 @@ export class StudentComponent implements OnInit {
   studentId: number;
   feesForStudent: number;
   studentToCourseList: any;
+  minDate = new Date(2020, 4, 9);
+  maxDate = new Date(2024, 4, 9);
 
   constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService) {
     this.studentList = this.studentService.getStudents();
@@ -59,6 +62,7 @@ export class StudentComponent implements OnInit {
       cancelButtonText: 'Decline'
     }).then((result) => {
       if (result.value){
+        this.studentForm.value.date = formatDate(this.studentForm.value.date , 'yyyy-MM-dd' , 'en');
         this.studentService.saveStudentData().subscribe((response: { success: number, data: Student }) => {
           if (response.success === 1){
             Swal.fire('Student has been added', '', 'success');
@@ -99,6 +103,10 @@ export class StudentComponent implements OnInit {
       cancelButtonText: 'Decline'
     }).then((result) => {
       if(result.value){
+        if (this.studentForm.value.effective_date){
+          this.studentForm.value.effective_date = formatDate( this.studentForm.value.effective_date , 'yyyy-MM-dd', 'en');
+          console.log( this.studentForm.value.effective_date);
+        }
         this.studentService.updateStudent().subscribe((response: {success: number, data: Student}) => {
           if (response.success === 1 ){
             Swal.fire('Student Data Updated', 'success', 'success');

@@ -24,6 +24,24 @@
                   <input matInput placeholder="Address" formControlName="address">
                 </mat-form-field>
               </div>
+              <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" [hidden]="studentForm.value.id">
+                <mat-form-field class="col-5">
+                  <input matInput placeholder="Date" formControlName="date">
+                </mat-form-field>
+              </div>
+              <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0" [hidden]="!studentForm.value.id" >
+                <mat-form-field class="col-5">
+                  <input placeholder="Effective Date" matInput [matDatepicker]="picker2"
+                         formControlName="effective_date"
+                         [min]="minDate"
+                         [max]="maxDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2">
+                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+
               <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0"  [hidden]="showCourses">
                 <button mat-raised-button (click)="saveStudent()" [disabled]="studentForm.invalid" [hidden]="!showSave">Save</button>
                 <button mat-raised-button [disabled]="studentForm.pristine" [hidden]="showSave" (click)="updateStudentInfo()">Update</button>

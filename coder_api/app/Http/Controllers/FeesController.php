@@ -41,7 +41,7 @@ class FeesController extends Controller
 public function getDueFees(Request $request){
 
 
-    $result = StudentToCourse::select('student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student',DB::raw("ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
+    $result = StudentToCourse::select('student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student',DB::raw("get_total_due(student_to_courses.course_id,student_to_courses.student_id) as totalDue, ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
              ->leftJoin('fees', function($join)
              {
                 $join->on('fees.course_id', '=', 'student_to_courses.course_id');

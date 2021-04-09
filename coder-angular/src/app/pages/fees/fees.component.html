@@ -15,6 +15,7 @@
           <th>SL. No</th>
           <th>Student Name</th>
           <th>Contact</th>
+          <th>Effective Date</th>
           <th>Enter Fees</th>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
             <td>{{indexOfElement+1}}</td>
             <td>{{item.student_name}}</td>
             <td>{{item.contact}}</td>
+            <td>{{item.effective_date === null ?'not joined': item.effective_date }}</td>
             <td>
               <button mat-button (click)="populateFeesFormByStudent(item)"><mat-icon>arrow_forward</mat-icon></button>
             </td>
@@ -55,7 +57,7 @@
             <input matInput placeholder="Student Name" formControlName="student_name" readonly>
           </mat-form-field>
           <div>
-            <mat-form-field>
+            <mat-form-field class="col-4">
               <mat-label>Date</mat-label>
               <input matInput placeholder="Date" formControlName="date" readonly>
               <!--              <input matInput-->
@@ -111,6 +113,7 @@
               <th>Course</th>
               <th>Course Type</th>
               <th>Course Fee</th>
+              <th>Total Due</th>
               <th>Paid</th>
               <th>Due</th>
               </thead>
@@ -119,6 +122,7 @@
                 <td>{{item.course_name}}</td>
                 <td>{{item.type}}</td>
                 <td>{{item.fees_for_student}}</td>
+                <td>{{item.totalDue}}</td>
                 <td>{{item.paid}}</td>
                 <td>{{item.due}}</td>
               </tr>
