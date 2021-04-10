@@ -45,7 +45,8 @@
               <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0"  [hidden]="showCourses">
                 <button mat-raised-button (click)="saveStudent()" [disabled]="studentForm.invalid" [hidden]="!showSave">Save</button>
                 <button mat-raised-button [disabled]="studentForm.pristine" [hidden]="showSave" (click)="updateStudentInfo()">Update</button>
-                <button mat-raised-button (click)="clearForm()" [disabled]="studentForm.pristine">Clear</button>
+<!--                <button mat-raised-button (click)="clearForm()" [disabled]="studentForm.pristine">Clear</button>-->
+                <button mat-raised-button (click)="clearForm()" [disabled]="!studentForm.value.student_name">Clear</button>
               </div>
             </div>
           </form>

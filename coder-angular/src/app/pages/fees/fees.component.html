@@ -23,7 +23,7 @@
             <td>{{indexOfElement+1}}</td>
             <td>{{item.student_name}}</td>
             <td>{{item.contact}}</td>
-            <td>{{item.effective_date === null ?'not joined': item.effective_date }}</td>
+            <td>{{item.effective_date === null ?'not joined': item.effective_date | date: 'dd/MM/yyyy' }}</td>
             <td>
               <button mat-button (click)="populateFeesFormByStudent(item)"><mat-icon>arrow_forward</mat-icon></button>
             </td>
@@ -53,25 +53,16 @@
     <mat-card  style="background-color: lightgoldenrodyellow; margin: 10px">
       <div [formGroup]="feesEntryForm">
         <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-          <mat-form-field style="width: 40%">
-            <input matInput placeholder="Student Name" formControlName="student_name" readonly>
-          </mat-form-field>
-          <div>
+          <div fxLayout="row">
+            <mat-form-field class="col-6">
+              <input matInput placeholder="Student Name" formControlName="student_name" readonly>
+            </mat-form-field>
             <mat-form-field class="col-4">
               <mat-label>Date</mat-label>
               <input matInput placeholder="Date" formControlName="date" readonly>
-              <!--              <input matInput-->
-              <!--                     [matDatepicker]="picker1"-->
-              <!--                     formControlName="date"-->
-              <!--                     [min] = "minDate"-->
-              <!--                     [max] = "maxDate"-->
-              <!--                     (change)="test()">-->
-              <!--              <mat-datepicker-toggle matSuffix [for]="picker1">-->
-              <!--                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>-->
-              <!--              </mat-datepicker-toggle>-->
-              <!--              <mat-datepicker #picker1></mat-datepicker>-->
             </mat-form-field>
           </div>
+
           <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" *ngIf="courseListByStudent.length > 0">
             <table class="table table-hover">
               <thead>
@@ -98,8 +89,11 @@
                 </tbody>
             </table>
           </div>
-          <div *ngIf="courseListByStudent.length ===0" style="color: red ; text-align: center">
+          <div *ngIf="courseListByStudent.length ===0 && feesEntryForm.value.student_name" style="color: red ; text-align: center">
             <h6>No Active Course !!!</h6>
+          </div>
+          <div *ngIf="feesEntryForm.value.student_name === null" style="color: red ; text-align: center">
+            <h6>No Student Chosen !!!</h6>
           </div>
 
           <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" style="padding-bottom: 5px">
@@ -132,6 +126,7 @@
         </div>
 
       </div>
+
     </mat-card>
 
   </div>

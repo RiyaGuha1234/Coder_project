@@ -32,6 +32,8 @@ export class StudentComponent implements OnInit {
   studentToCourseList: any;
   minDate = new Date(2020, 4, 9);
   maxDate = new Date(2024, 4, 9);
+  currentDate = new Date();
+  date = formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
 
   constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService) {
     this.studentList = this.studentService.getStudents();
@@ -84,7 +86,8 @@ export class StudentComponent implements OnInit {
 
   clearForm(){
     this.studentForm.reset();
-    this.studentForm.patchValue({contact: '+91'});
+    this.studentForm.patchValue({contact: '+91', date: this.date});
+
   }
 
   populateFormByStudent(item){

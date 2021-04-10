@@ -86,7 +86,9 @@ export class FeesComponent implements OnInit {
               Swal.fire('fees has been submiited',
                 '',
                 'success');
-              this.feesEntryForm.reset();
+              // this.feesEntryForm.reset();
+              // this.feesEntryForm.patchValue({student_name: item.student_name, date: this.feesDate});
+              this.feesEntryForm.controls[('fees')].reset();
               this.feesService.viewDueFees(item);
               // this.feesDueService.getUpdatedDueFeesList();
               this.feesEntryForm.patchValue({date: this.feesDate});

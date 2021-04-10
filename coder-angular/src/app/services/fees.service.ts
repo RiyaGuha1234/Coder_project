@@ -5,6 +5,7 @@ import {Subject, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import {Student} from '../models/student.model';
+import {GlobalVariable} from '../shared/GlobalVariable';
 
 @Injectable({
   providedIn: 'root'
@@ -37,15 +38,18 @@ export class FeesService {
   }
 
   submitFees(data){
-    return this.http.post('http://127.0.0.1:8000/api/saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
+    // return this.http.post('http://127.0.0.1:8000/api/saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
+    return this.http.post(GlobalVariable.API_URL + 'saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
   }
 
   getCourseByStudent(id){
-    return  this.http.get('http://127.0.0.1:8000/api/getCourseByStudent/' + id);
+    // return  this.http.get('http://127.0.0.1:8000/api/getCourseByStudent/' + id);
+    return  this.http.get(GlobalVariable.API_URL + 'getCourseByStudent/' + id);
   }
 
   viewDueFees(data){
-    return this.http.post('http://127.0.0.1:8000/api/dueFees', data).pipe(tap((response: {success: number, data: any})  => {
+    // return this.http.post('http://127.0.0.1:8000/api/dueFees', data).pipe(tap((response: {success: number, data: any})  => {
+    return this.http.post(GlobalVariable.API_URL + 'dueFees', data).pipe(tap((response: {success: number, data: any})  => {
       this.dueByStudentData = response.data;
       this.dueByStudentDataSub.next([...this.dueByStudentData]);
 

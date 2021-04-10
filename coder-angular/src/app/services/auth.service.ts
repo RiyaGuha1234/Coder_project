@@ -5,6 +5,7 @@ import {tap} from 'rxjs/operators';
 import {User} from '../models/user.model';
 import {Subject} from 'rxjs';
 import {Router} from '@angular/router';
+import {GlobalVariable} from '../shared/GlobalVariable';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,8 @@ export class AuthService {
   }
 
   login(loginData) {
-    return this.http.post('http://127.0.0.1:8000/api/login', loginData)
+    // return this.http.post('http://127.0.0.1:8000/api/login', loginData)
+    return this.http.post(GlobalVariable.API_URL + 'login', loginData)
       .pipe(tap((response: { success: number, userData: any , token: any }) => {
         if (response.token !== null){
           const user = new User(
