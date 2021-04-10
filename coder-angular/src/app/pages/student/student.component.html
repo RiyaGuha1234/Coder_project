@@ -58,6 +58,10 @@
           <h3>{{studentName}}</h3>
         </div>
         <mat-card style="background-color: wheat; margin-top: 20px">
+          <div class="input-group rounded"  style="width: 70% ; margin-bottom: 25px">
+            <input type="search" class="form-control rounded" placeholder="Search Course" aria-label="Search"
+                 [(ngModel)]="searchCourse"  aria-describedby="search-addon" />
+          </div>
           <table class="table table-hover">
             <thead>
             <th>SL No.</th>
@@ -68,7 +72,7 @@
             <!--                <th>Save</th>-->
             </thead>
             <tbody>
-            <tr *ngFor="let item of courseList; let indexOfElement =index">
+            <tr *ngFor="let indexOfElement =index ; let item of courseList | filter : searchCourse |  paginate: { itemsPerPage: pageSize, currentPage: p }">
               <td>{{indexOfElement+1}}</td>
               <td>{{item.course_name}}</td>
               <td>{{item.type}}</td>
@@ -86,6 +90,23 @@
             </tbody>
 
           </table>
+          <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+            <!--    https://www.npmjs.com/package/ngx-pagination-->
+            <!--    npm i ngx-pagination-->
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            <pagination-controls  id="some_id"
+                                  (pageChange)="p=($event)"
+                                  maxSize="5"
+                                  directionLinks="true"
+                                  autoHide="true"
+                                  responsive="true"
+                                  previousLabel="Previous"
+                                  nextLabel="Next"
+                                  screenReaderPaginationLabel="Pagination"
+                                  screenReaderPageLabel="page"
+                                  screenReaderCurrentLabel="You're on page">
+            </pagination-controls>
+          </div>
           <div  fxLayout="row" fxLayoutGap="5px"  style="align-content: center">
             <button class="btn btn-info" (click)="backToPrevious()">Back</button>
           </div>

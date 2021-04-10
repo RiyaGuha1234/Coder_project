@@ -23,6 +23,7 @@ export class StudentComponent implements OnInit {
   selectedCourse = [];
   studentName: string;
   searchString: string;
+  searchCourse: string;
   pageSize: number;
   page: number;
   p = 1;

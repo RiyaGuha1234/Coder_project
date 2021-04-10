@@ -1,14 +1,18 @@
 <div>
   <div fxFlex="50">
     <mat-card style="background-color: cadetblue; margin: 10px">
-      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0">
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Search..." [(ngModel)]="searchString" name="search" type="text" autofocus>
-        </mat-form-field>
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style =" margin-bottom: 25px">
+<!--        <mat-form-field class="example-full-width">-->
+<!--          <input matInput placeholder="Search..." [(ngModel)]="searchString" name="search" type="text" autofocus>-->
+<!--        </mat-form-field>-->
+        <div class="input-group rounded"  style = "width: 60% ;">
+          <input type="search" class="form-control rounded" placeholder="Search Student" aria-label="Search"
+                 [(ngModel)]="searchString"  aria-describedby="search-addon" />
+        </div>
 
-        <mat-form-field class="example-full-width">
-          <input matInput placeholder="Items per page" [(ngModel)]="pageSize" name="PageSize" type="text">
-        </mat-form-field>
+<!--        <mat-form-field class="example-full-width">-->
+<!--          <input matInput placeholder="Items per page" [(ngModel)]="pageSize" name="PageSize" type="text">-->
+<!--        </mat-form-field>-->
       </div>
       <table class="table table-hover">
         <thead>
