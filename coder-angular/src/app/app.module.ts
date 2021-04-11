@@ -10,7 +10,7 @@ import {MaterialModule} from './core/material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgxPrintModule} from 'ngx-print';
@@ -59,7 +59,8 @@ import { StudentToCourseComponent } from './pages/student-to-course/student-to-c
     Ng2SearchPipeModule,
     NgxPaginationModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+
 
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true }],

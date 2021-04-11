@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Student} from '../models/student.model';
 import {Subject, throwError} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../models/course.model';
 import {formatDate} from '@angular/common';
@@ -71,8 +71,9 @@ export class StudentService {
   deleteStudent(id){
     // return this.http.delete('http://127.0.0.1:8000/api/delete/' + id)
     return this.http.delete(GlobalVariable.API_URL + 'delete/' + id)
-      .pipe(catchError(this._serverError), tap((response: {success: number, data: any}) => {
+      .pipe(catchError(this._serverError), tap((response: {success: number, data: any , status: number}) => {
         if (response.success === 1 ){
+          console.log(response);
           const index = this.studentData.findIndex(x => x.id === id);
           if(index !== -1){
             this.studentData.splice(index,1);
@@ -82,7 +83,15 @@ export class StudentService {
   }
 
 
+//-----method for getting status code in response-----------
 
+//   deleteStudent(id){
+//     return this.http.delete(GlobalVariable.API_URL + 'delete/' + id , { observe: 'response'}).subscribe((response) => {
+//       console.log(response);
+//     }, error => {
+//       console.log(error);
+//     });
+//   }
 
   private _serverError(err: any) {
     if (err instanceof Response) {
@@ -91,7 +100,7 @@ export class StudentService {
       // instead of the line above:
       // return Observable.throw(err.text() || 'backend server error');
     }
-    if (err.status === 0){
+    if (err.status === 200){
       // tslint:disable-next-line:label-position
       return throwError ({status: err.status, message: 'Backend Server is not Working', statusText: err.statusText});
     }

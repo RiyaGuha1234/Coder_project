@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {Course} from '../../models/course.model';
 import {StudentToCourseService} from '../../services/student-to-course.service';
 import {formatDate} from '@angular/common';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
 
 
 
@@ -36,7 +37,7 @@ export class StudentComponent implements OnInit {
   currentDate = new Date();
   date = formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
 
-  constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService) {
+  constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService ) {
     this.studentList = this.studentService.getStudents();
   }
 
@@ -136,6 +137,15 @@ export class StudentComponent implements OnInit {
       cancelButtonText: 'Decline'
     }).then((result) => {
       if (result.value){
+        //--------method for getting status code in response from component----------
+
+        // this.studentService.deleteStudent(item.id).subscribe((response) => {
+        //   console.log('from compo');
+        //   console.log(response);
+        // }, error => {
+        //   console.log(error);
+        // });
+
         this.studentService.deleteStudent(item.id).subscribe((response: {success: number, data: any}) => {
           if (response.success === 1){
             Swal.fire('Student Data Deleted', 'success', 'success');
@@ -146,7 +156,6 @@ export class StudentComponent implements OnInit {
               'Student data is active',
               'error');
           }
-
         });
       }
       else{
