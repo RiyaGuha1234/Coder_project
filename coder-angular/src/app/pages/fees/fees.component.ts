@@ -62,10 +62,13 @@ export class FeesComponent implements OnInit {
 
   submitFeesByStudent(item){
 
-    console.log(item);
-    const formDate = this.feesEntryForm.value.date;
+    // console.log(item);
+    // const formDate = this.feesEntryForm.value.date;
+    // console.log( formDate);
 
-    this.feesEntryForm.value.date = formatDate(formDate, 'yyyy-MM-dd', 'en');
+
+
+
     console.log( this.feesEntryForm.value.date);
 
     if (this.feesEntryForm.value.fees === null){

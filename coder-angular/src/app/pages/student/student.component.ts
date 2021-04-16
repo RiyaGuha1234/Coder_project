@@ -7,6 +7,8 @@ import {Course} from '../../models/course.model';
 import {StudentToCourseService} from '../../services/student-to-course.service';
 import {formatDate} from '@angular/common';
 import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import { DateAdapter } from '@angular/material/core';
+
 
 
 
@@ -17,6 +19,7 @@ import {HttpHeaders, HttpResponse} from '@angular/common/http';
   styleUrls: ['./student.component.scss']
 })
 export class StudentComponent implements OnInit {
+
   studentList: Student[];
   courseList: Course[];
   studentForm: FormGroup;
@@ -37,8 +40,9 @@ export class StudentComponent implements OnInit {
   currentDate = new Date();
   date = formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
 
-  constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService ) {
+  constructor(private studentService: StudentService , private  studentToCourseService: StudentToCourseService , private dateAdapter: DateAdapter<Date> ) {
     this.studentList = this.studentService.getStudents();
+    this.dateAdapter.setLocale('en-GB');
   }
 
   ngOnInit(): void {
@@ -66,12 +70,12 @@ export class StudentComponent implements OnInit {
       cancelButtonText: 'Decline'
     }).then((result) => {
       if (result.value){
-        this.studentForm.value.date = formatDate(this.studentForm.value.date , 'yyyy-MM-dd' , 'en');
+        // this.studentForm.value.date = formatDate(this.studentForm.value.date , 'yyyy-MM-dd' , 'en');
         this.studentService.saveStudentData().subscribe((response: { success: number, data: Student }) => {
           if (response.success === 1){
             Swal.fire('Student has been added', '', 'success');
             this.studentForm.reset();
-            this.studentForm.patchValue({contact: '+91'});
+            this.studentForm.patchValue({contact: '+91', date: this.date , effective_date: this.currentDate});
           }
         });
       }
@@ -88,14 +92,15 @@ export class StudentComponent implements OnInit {
 
   clearForm(){
     this.studentForm.reset();
-    this.studentForm.patchValue({contact: '+91', date: this.date});
+    this.studentForm.patchValue({contact: '+91', date: this.date , effective_date: this.currentDate});
+    console.log(this.studentForm.value);
 
   }
 
   populateFormByStudent(item){
     this.showCourses = false;
     this.showSave = false;
-    this.studentForm.patchValue({id: item.id, student_name: item.student_name, contact: item.contact, address: item.address});
+    this.studentForm.patchValue({id: item.id, student_name: item.student_name, contact: item.contact, address: item.address, effective_date: item.effective_date});
 
   }
   updateStudentInfo(){
@@ -176,19 +181,20 @@ export class StudentComponent implements OnInit {
     {
       if (response.data){
         this.courseList = response.data;
+        this.studentToCourseService.getCourseByStudent(item.id).subscribe((response: {success: number, data: any}) => {
+          if (response.data){
+            for (let i = 0; i < response.data.length; i++){
+              const index = this.courseList.findIndex(x => x.id === response.data[i].course_id);
+              if (index !== -1 ){
+                this.courseList[index].isCourseSaved = true;
+              }
+            }
+          }
+        });
         this.showCourses = true;
       }
     });
-    this.studentToCourseService.getCourseByStudent(item.id).subscribe((response: {success: number, data: any}) => {
-      if(response.data){
-         for (let i = 0; i < response.data.length; i++){
-           const index = this.courseList.findIndex(x => x.id === response.data[i].course_id);
-           if(index !== -1 ){
-             this.courseList[index].isCourseSaved = true;
-           }
-         }
-      }
-    });
+
     this.selectedCourse = [] ;
     this.studentName = item.student_name;
     this.studentId = item.id;

@@ -22,14 +22,14 @@ class StudentController extends Controller
 
     public function saveStudent(Request $request){
 
-//        return $request;
-
         $student = new Student();
         $student->student_name = $request->student_name;
         $student->contact = $request->contact;
         $student->address = $request->address;
         $student->date = $request->date;
+        $student->effective_date = $request->effective_date;
         $student->save();
+
 
         if($student){
             return response()->json(['success'=>1,'data'=>$student],200,[],JSON_NUMERIC_CHECK);

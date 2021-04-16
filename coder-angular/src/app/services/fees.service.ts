@@ -38,6 +38,7 @@ export class FeesService {
   }
 
   submitFees(data){
+    this.feesEntryForm.value.date = formatDate(this.currentDate, 'yyyy-MM-dd', 'en');
     // return this.http.post('http://127.0.0.1:8000/api/saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
     return this.http.post(GlobalVariable.API_URL + 'saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
   }
