@@ -22,6 +22,7 @@ export class StudentComponent implements OnInit {
 
   studentList: Student[];
   courseList: Course[];
+  courseListByStudent: any[];
   studentForm: FormGroup;
   showCourses = false;
   selectedCourse = [];
@@ -32,6 +33,7 @@ export class StudentComponent implements OnInit {
   page: number;
   p = 1;
   showSave = true;
+  showAddedCourse = false;
   studentId: number;
   feesForStudent: number;
   studentToCourseList: any;
@@ -51,6 +53,7 @@ export class StudentComponent implements OnInit {
     this.showCourses = false;
     this.page = 1;
     this.pageSize = 5;
+    this.showAddedCourse = false;
 
     this.studentService.studentDataSubUpdateListener().subscribe((response) => {
       this.studentList = response;
@@ -98,9 +101,16 @@ export class StudentComponent implements OnInit {
   }
 
   populateFormByStudent(item){
+    this.showAddedCourse = false;
+    this.studentService.getCourseByStudent(item.id).subscribe((response: {success: number, data: any}) => {
+      if (response.data.length !== 0) {
+        this.courseListByStudent = response.data;
+        this.showAddedCourse = true;
+      }
+    });
     this.showCourses = false;
     this.showSave = false;
-    this.studentForm.patchValue({id: item.id, student_name: item.student_name, contact: item.contact, address: item.address, effective_date: item.effective_date});
+    this.studentForm.patchValue({id: item.id, student_name: item.student_name, contact: item.contact, address: item.address, effective_date: item.effective_date, closing_date: item.closing_date});
 
   }
   updateStudentInfo(){
@@ -115,6 +125,7 @@ export class StudentComponent implements OnInit {
       if(result.value){
         if (this.studentForm.value.effective_date){
           this.studentForm.value.effective_date = formatDate( this.studentForm.value.effective_date , 'yyyy-MM-dd', 'en');
+          this.studentForm.value.closing_date = formatDate( this.studentForm.value.closing_date , 'yyyy-MM-dd', 'en');
           console.log( this.studentForm.value.effective_date);
         }
         this.studentService.updateStudent().subscribe((response: {success: number, data: Student}) => {
@@ -238,6 +249,14 @@ export class StudentComponent implements OnInit {
         Swal.fire( 'Cancelled',
           'Course is not Added',
           'error');
+      }
+    });
+  }
+
+  editCourse(item){
+    this.studentService.editCourseInfo(item).subscribe((response: {success: number, data: any}) => {
+      if (response.data){
+        Swal.fire('success', 'Course Data Updated !', 'success');
       }
     });
   }

@@ -1,6 +1,6 @@
 <div>
   <div fxFlex="50">
-    <mat-card style="background-color: cadetblue; margin: 10px">
+    <mat-card style="background-color: cadetblue; margin: 10px" [hidden]="showDue">
       <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style =" margin-bottom: 25px">
 <!--        <mat-form-field class="example-full-width">-->
 <!--          <input matInput placeholder="Search..." [(ngModel)]="searchString" name="search" type="text" autofocus>-->
@@ -19,7 +19,8 @@
           <th>SL. No</th>
           <th>Student Name</th>
           <th>Contact</th>
-          <th>Effective Date</th>
+<!--          <th>Effective Date</th>-->
+<!--          <th>Closing Date</th>-->
           <th>Enter Fees</th>
         </thead>
         <tbody>
@@ -27,7 +28,8 @@
             <td>{{indexOfElement+1}}</td>
             <td>{{item.student_name}}</td>
             <td>{{item.contact}}</td>
-            <td>{{item.effective_date === null ?'not joined': item.effective_date | date: 'dd/MM/yyyy' }}</td>
+<!--            <td>{{item.effective_date === null ?'not joined': item.effective_date | date: 'dd/MM/yyyy' }}</td>-->
+<!--            <td>{{item.closing_date }}</td>-->
             <td>
               <button mat-button (click)="populateFeesFormByStudent(item)"><mat-icon>arrow_forward</mat-icon></button>
             </td>
@@ -52,9 +54,79 @@
         </pagination-controls>
       </div>
     </mat-card>
+    <mat-card style="background-color: burlywood ;margin: 10px" [hidden]="!showDue" *ngIf="dueByStudent">
+      <div style="text-align: center ; margin-bottom: 20px">
+        <h3>{{dueByStudent[0].course_name}} &nbsp;({{dueByStudent[0].type}})</h3>
+      </div>
+      <div class="d-flex">
+        <div class="col-4" style="text-align: left">
+          <p>Course Fee : {{dueByStudent[0].fees_for_student}}</p>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4" style="text-align: right">
+          <p>Course Status : {{dueByStudent[0].inforce === 1? 'Active' : 'Inactive'}}</p>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-6" style="text-align: left">
+          <p>Effective Date : {{dueByStudent[0].effective_date | date: 'dd/MM/yyyy'}}</p>
+        </div>
+<!--        <div class="col-4"></div>-->
+        <div class="col-6" style="text-align: right">
+          <p>Closing Date : {{dueByStudent[0].closing_date === null ? 'N/A': dueByStudent[0].closing_date | date: 'dd/MM/yyyy'}}</p>
+        </div>
+      </div>
+      <table class="table table-hover" *ngIf="dueByStudent[0].paid !== 0" style="width: 100%">
+        <thead>
+        <!--              <th>Course</th>-->
+        <!--              <th>Course Type</th>-->
+        <th>SL No.</th>
+        <th>Payment Date</th>
+        <th>Paid</th>
+
+
+        <!--              <th>Due</th>-->
+        </thead>
+        <tbody>
+        <tr *ngFor="let item  of feesPaid ; let  indexOfElement=index">
+          <!--                <td>{{item.course_name}}</td>-->
+          <!--                <td>{{item.type}}</td>-->
+          <td>{{indexOfElement+1}}</td>
+          <td>{{item.date | date: 'dd/MM/yyyy'}}</td>
+          <td>₹ {{item.fees_paid.toFixed(2)}}</td>
+          <!--                <td>{{item.due}}</td>-->
+        </tr>
+        <hr>
+        <tr *ngIf="dueByStudent">
+          <td>Total Due:  </td>
+          <td>{{dueByStudent[0].totalDue}}</td>
+          <td>Total Paid: </td>
+          <td> {{dueByStudent[0].paid}}</td>
+          <td>Due:  {{dueByStudent[0].due}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <table class="table table-hover" *ngIf="dueByStudent[0].paid === 0">
+        <tbody>
+        <tr *ngIf="dueByStudent">
+<!--          <td>Course Status:  </td>-->
+<!--          <td>{{dueByStudent[0].inforce === 1? 'Active' : 'Inactive'}}</td>-->
+          <td>Total Fees:  </td>
+          <td>{{dueByStudent[0].totalDue}}</td>
+          <td>Total Paid: </td>
+          <td> {{dueByStudent[0].paid}}</td>
+          <td>Total Due:  {{dueByStudent[0].due}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" style="padding-bottom: 5px">
+        <button mat-button style="background-color: aqua" [disabled]="dueByStudent[0].inforce !==0" (click)="setDiscount(dueByStudent[0].student_id,dueByStudent[0].course_id)">Set Discount</button>
+        <button mat-button style="background-color: aqua"  (click)="backToPrevious()">Back</button>
+      </div>
+    </mat-card>
   </div>
   <div fxFlex="50">
-    <mat-card  style="background-color: lightgoldenrodyellow; margin: 10px">
+    <mat-card  style="background-color: lightgoldenrodyellow; margin: 30px">
       <div [formGroup]="feesEntryForm">
         <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
           <div fxLayout="row">
@@ -71,7 +143,7 @@
             <table class="table table-hover">
               <thead>
                 <th>SL NO.</th>
-                <th>Active Course</th>
+                <th>Course</th>
                 <th>Fees (₹)</th>
               </thead>
               <tbody>
@@ -80,15 +152,19 @@
                   <td>{{item.course_name}}</td>
                   <td>
                     <mat-form-field>
-                      <input matInput placeholder="Submit Fees" formControlName="fees">
+                      <input matInput placeholder="Submit Fees" formControlName="fees" [readonly]="item.inforce === 0">
                     </mat-form-field>
                   </td>
                   <td>
-                    <button mat-button style="background-color: aqua" (click)="submitFeesByStudent(item)">Submit</button>
+                    <button mat-button style="background-color: aqua" (click)="submitFeesByStudent(item)" [disabled]="item.inforce === 0">Submit</button>
                   </td>
                   <td>
                     <button mat-button style="background-color: aqua" (click)="viewDue(item)">View Due</button>
+<!--                    <button mat-button style="background-color: aqua" [routerLink]="['/feesDue',item.student_id,item.course_id]">View Due</button>-->
                   </td>
+<!--                  <td>-->
+<!--                    <button mat-button style="background-color: aqua" (click)="setDiscount()">Set Discount</button>-->
+<!--                  </td>-->
                 </tr>
                 </tbody>
             </table>
@@ -100,33 +176,81 @@
             <h6>No Student Chosen !!!</h6>
           </div>
 
-          <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" style="padding-bottom: 5px">
+          <div  [hidden] = "courseListByStudent.length === 0" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" style="padding-bottom: 5px">
 <!--            <button mat-raised-button (click)="submitFeesByStudent()" [disabled]="feesEntryForm.invalid">Save</button>-->
 <!--            <button mat-raised-button (click)="submitFeesByStudent()">Save</button>-->
             <button mat-raised-button (click)="clearForm()" [disabled]="feesEntryForm.pristine">Clear</button>
+            <button mat-raised-button  (click)="openDialog()">Print Receipt</button>
+<!--            <button mat-raised-button (click)="openDialog()">Print </button>-->
           </div>
-          <mat-card style="background-color: burlywood ;margin: 10px" [hidden]="!showDue" >
-            <table class="table table-hover">
-              <thead>
-              <th>Course</th>
-              <th>Course Type</th>
-              <th>Course Fee</th>
-              <th>Total Due</th>
-              <th>Paid</th>
-              <th>Due</th>
-              </thead>
-              <tbody>
-              <tr *ngFor="let item  of dueByStudent">
-                <td>{{item.course_name}}</td>
-                <td>{{item.type}}</td>
-                <td>{{item.fees_for_student}}</td>
-                <td>{{item.totalDue}}</td>
-                <td>{{item.paid}}</td>
-                <td>{{item.due}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </mat-card>
+<!--          <mat-card style="background-color: burlywood ;margin: 10px" [hidden]="!showDue" >-->
+<!--            <table class="table table-hover">-->
+<!--              <thead>-->
+<!--              <th>Course</th>-->
+<!--              <th>Course Type</th>-->
+<!--              <th>Course Fee</th>-->
+<!--              <th>Total Due</th>-->
+<!--              <th>Paid</th>-->
+<!--              <th>Due</th>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr *ngFor="let item  of dueByStudent">-->
+<!--                <td>{{item.course_name}}</td>-->
+<!--                <td>{{item.type}}</td>-->
+<!--                <td>{{item.fees_for_student}}</td>-->
+<!--                <td>{{item.totalDue}}</td>-->
+<!--                <td>{{item.paid}}</td>-->
+<!--                <td>{{item.due}}</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </mat-card>-->
+<!--          <mat-card style="background-color: burlywood ;margin: 10px" [hidden]="!showDue" *ngIf="dueByStudent">-->
+<!--            <div style="text-align: center">-->
+<!--              <h3>{{dueByStudent[0].course_name}} &nbsp;({{dueByStudent[0].type}})</h3>-->
+<!--              <h6>Course Fee : {{dueByStudent[0].fees_for_student}}</h6>-->
+<!--            </div>-->
+<!--            <table class="table table-hover" *ngIf="dueByStudent[0].paid !== 0" style="width: 100%">-->
+<!--              <thead>-->
+<!--&lt;!&ndash;              <th>Course</th>&ndash;&gt;-->
+<!--&lt;!&ndash;              <th>Course Type</th>&ndash;&gt;-->
+<!--              <th>SL No.</th>-->
+<!--              <th>Payment Date</th>-->
+<!--              <th>Paid</th>-->
+
+<!--              &lt;!&ndash;              <th>Due</th>&ndash;&gt;-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr *ngFor="let item  of feesPaid ; let  indexOfElement=index">-->
+<!--&lt;!&ndash;                <td>{{item.course_name}}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{item.type}}</td>&ndash;&gt;-->
+<!--                <td>{{indexOfElement+1}}</td>-->
+<!--                <td>{{item.date | date: 'dd/MM/yyyy'}}</td>-->
+<!--                <td>₹ {{item.fees_paid.toFixed(2)}}</td>-->
+<!--                &lt;!&ndash;                <td>{{item.due}}</td>&ndash;&gt;-->
+<!--              </tr>-->
+<!--              <hr>-->
+<!--              <tr *ngIf="dueByStudent">-->
+<!--                <td>Total Due :  </td>-->
+<!--                <td>{{dueByStudent[0].totalDue}}</td>-->
+<!--                <td>Total Paid : </td>-->
+<!--                <td> {{dueByStudent[0].paid}}</td>-->
+<!--                <td>Due :  {{dueByStudent[0].due}}</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--            <table class="table table-hover" *ngIf="dueByStudent[0].paid === 0">-->
+<!--              <tbody>-->
+<!--                <tr *ngIf="dueByStudent">-->
+<!--                  <td>Total Fees :  </td>-->
+<!--                  <td>{{dueByStudent[0].totalDue}}</td>-->
+<!--                  <td>Total Paid : </td>-->
+<!--                  <td> {{dueByStudent[0].paid}}</td>-->
+<!--                  <td>Total Due :  {{dueByStudent[0].due}}</td>-->
+<!--                </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </mat-card>-->
         </div>
 
       </div>

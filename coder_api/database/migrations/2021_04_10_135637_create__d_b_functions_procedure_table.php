@@ -16,12 +16,12 @@ class CreateDBFunctionsProcedureTable extends Migration
     {
       DB::unprepared('DROP FUNCTION IF EXISTS coder_db.get_total_due;
                             CREATE FUNCTION coder_db.`get_total_due`(`param_course_id` INT, param_student_id INT) RETURNS double
-                                DETERMINISTIC
+                            DETERMINISTIC
                             BEGIN
                                   DECLARE temp_total_fees double;
                                   DECLARE temp_total_month int;
 
-                                  select if(TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())<1,1,TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())) into temp_total_month from students where id = param_student_id;
+                                  select if(TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())<1,1,TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())) into temp_total_month from student_to_courses where student_id = param_student_id AND course_id = param_course_id  ;
 
                                   select if(course_types.id =1,student_to_courses.fees_for_student * temp_total_month,student_to_courses.fees_for_student) into temp_total_fees
                                   from student_to_courses
@@ -34,14 +34,14 @@ class CreateDBFunctionsProcedureTable extends Migration
       );
       DB::unprepared('DROP FUNCTION IF EXISTS coder_db.get_fees_due;
                             CREATE FUNCTION coder_db.`get_fees_due`(`param_course_id` INT, param_student_id INT) RETURNS double
-                                DETERMINISTIC
+                            DETERMINISTIC
                             BEGIN
                                   DECLARE temp_total_fees double;
                                   DECLARE temp_total_fees_paid double;
                                   DECLARE temp_fees_due double;
                                   DECLARE temp_total_month int;
 
-                                        select if(TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())<1,1,TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())) into temp_total_month from students where id = param_student_id;
+                                        select if(TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())<1,1,TIMESTAMPDIFF(month, effective_date , CURRENT_DATE())) into temp_total_month from student_to_courses where student_id = param_student_id AND course_id = param_course_id ;
 
                                         select if(course_types.id =1,student_to_courses.fees_for_student * temp_total_month,student_to_courses.fees_for_student) into temp_total_fees
                                         from student_to_courses

@@ -5,7 +5,16 @@ import {FormGroup} from '@angular/forms';
 import {FeesService} from '../../services/fees.service';
 import {formatDate} from '@angular/common';
 import Swal from 'sweetalert2';
-import {FeesDueService} from '../../services/fees-due.service';
+import {Inject} from '@angular/core';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogConfig} from '@angular/material/dialog';
+import {BillComponent} from '../bill/bill.component';
+import {Overlay} from '@angular/cdk/overlay';
+
+
+// export interface DialogData {
+//    billInfo: any;
+//
+// }
 
 @Component({
   selector: 'app-fees',
@@ -27,16 +36,20 @@ export class FeesComponent implements OnInit {
   courseListByStudent: any[] = [];
   showDue = false;
   dueByStudent: any;
-  constructor(private  studentService: StudentService , private  feesService: FeesService , private  feesDueService: FeesDueService) {
+  feesPaid: any[];
+  billInfo: any;
+  discountEnabled = false;
+  constructor(private  studentService: StudentService , private  feesService: FeesService , public dialog: MatDialog) {
     this.studentList = this.studentService.getStudents();
   }
 
   ngOnInit(): void {
+    this.discountEnabled = false;
     this.showDue = false;
     this.searchString = null;
     this.pageSize = 5;
     this.feesEntryForm = this.feesService.feesEntryForm;
-    this.studentService.studentDataSubUpdateListener().subscribe((response) =>{
+    this.studentService.studentDataSubUpdateListener().subscribe((response) => {
       this.studentList = response;
     });
     this.feesService.dueByStudentDataUpdateListener().subscribe((response) => {
@@ -49,7 +62,11 @@ export class FeesComponent implements OnInit {
       this.courseListByStudent = response.data;
     });
     this.feesEntryForm.patchValue({id: item.id , student_name: item.student_name});
-    // const x = formatDate(this.feesEntryForm.value.date, 'yyyy-MM-dd', 'en');
+    const x = formatDate(this.currentDate, 'yyyy-MM-dd', 'en');
+    if (x > item.closing_date){
+      this.discountEnabled = true;
+      console.log(this.discountEnabled);
+    }
 
   }
 
@@ -105,13 +122,48 @@ export class FeesComponent implements OnInit {
     }
   }
   viewDue(item){
-    this.feesService.viewDueFees(item).subscribe((response:{success: number , data: any}) => {
-      if (response.data){
-        this.dueByStudent = response.data;
-        console.log(this.dueByStudent);
+    console.log(item);
+    this.feesService.viewDueFees(item).subscribe((response:{success: number , data1: any, data2: any}) => {
+      if (response.data2){
+        this.dueByStudent = response.data2;
+        console.log(this.dueByStudent[0]);
         this.showDue = true;
+      }
+      if (response.data1){
+        this.feesPaid  = response.data1;
       }
     });
   }
+
+
+
+  openDialog() {
+    this.feesService.getBillInfo(this.feesEntryForm.value.id);
+    let dialogConfig = new MatDialogConfig();
+
+    dialogConfig = {
+      data: { billInfo: this.billInfo },
+      width: '80%',   height : '95%',
+      panelClass: 'custom-dialog-container'
+    };
+    this.dialog.open(BillComponent  , dialogConfig);
+  }
+
+
+  setDiscount(studentId, courseId){
+      this.feesService.setDiscount(studentId, courseId).subscribe((response:{success: number , data: any}) => {
+        if (response){
+          Swal.fire('Success', 'Discount has been set', 'success');
+        }
+      });
+  }
+
+
+  backToPrevious(){
+    this.showDue = false;
+  }
+
+
+
 
 }

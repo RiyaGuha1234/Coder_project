@@ -14,7 +14,7 @@ class StudentController extends Controller
      */
     public function getStudents()
     {
-        $result = Student::all();
+        $result = Student::all()->where('inforce',1);
 
         return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
 
@@ -28,6 +28,7 @@ class StudentController extends Controller
         $student->address = $request->address;
         $student->date = $request->date;
         $student->effective_date = $request->effective_date;
+        $student->closing_date = $request->closing_date;
         $student->save();
 
 
@@ -44,9 +45,8 @@ class StudentController extends Controller
         $student->student_name = $request->student_name;
         $student->contact = $request->contact;
         $student->address = $request->address;
-        if($request->effective_date){
-            $student->effective_date = $request->effective_date;
-        }
+        $student->effective_date = $request->effective_date;
+        $student->closing_date = $request->closing_date;
         $student->update();
 
         if($student){
@@ -65,6 +65,15 @@ class StudentController extends Controller
         else{
             return response()->json(['success'=>0,'data'=>$student],200,[],JSON_NUMERIC_CHECK);
         }
+    }
+
+    public  function getCourseByStudent($id){
+        $result = StudentToCourseController::select('student_to_courses.id','student_to_courses.course_id','courses.course_name','student_to_courses.effective_date','student_to_courses.closing_date','student_to_courses.fees_for_student')
+                 ->join('courses','courses.id','=','student_to_courses.course_id')
+                  ->where('student_id',$id)
+                  ->get();
+
+        return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
     }
 
     /**

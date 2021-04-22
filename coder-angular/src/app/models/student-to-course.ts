@@ -1,7 +1,7 @@
 
 
 
-export class Course{
+export class StudentToCourse{
   id?: number;
   course_id?: string;
   student_id?: number;

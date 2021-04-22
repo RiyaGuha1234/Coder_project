@@ -27,6 +27,7 @@ class StudentToCourseController extends Controller
             $data->student_id = $id ;
             $data->course_id = $courses->id;
             $data->fees_for_student = $courses->course_fees;
+            $data->effective_date = date('y-m-d');
             $data->save();
 
             if($data){
@@ -40,14 +41,40 @@ class StudentToCourseController extends Controller
     }
 
     public function getCourseByStudent($id){
-        $result = StudentToCourse::select('student_id','course_id','courses.course_name')
+        $result = StudentToCourse::select('student_to_courses.id','student_to_courses.student_id','student_to_courses.course_id','courses.course_name','student_to_courses.effective_date','student_to_courses.closing_date','student_to_courses.inforce')
                   ->join('courses','student_to_courses.course_id','=','courses.id')
-                  ->where('student_id',$id)
+                  ->where('student_to_courses.student_id',$id)
+//                  ->where('student_to_courses.inforce',1)
                   ->get();
 
         return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
     }
 
+
+    public  function  setDiscount(Request $request){
+        $result = StudentToCourse::where('student_id',$request->studentId)
+                  ->where('course_id',$request->courseId)
+                  ->first();
+
+        $result->inforce = 0;
+        $result->update();
+
+        return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
+
+    }
+
+    public  function  editCourseInfo(Request $request){
+        $result = StudentToCourse::find($request->id);
+        $result->effective_date  = $request->effective_date;
+        if($request->closing_date){
+            $result->closing_date  = $request->closing_date;
+            $result->inforce = 0;
+        }
+
+        $result->update();
+
+        return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
+    }
     /**
      * Show the form for creating a new resource.
      *

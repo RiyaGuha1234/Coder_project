@@ -31,34 +31,58 @@ class FeesController extends Controller
         return response()->json(['success'=>1,'data'=>$fees],200,[],JSON_NUMERIC_CHECK);
     }
 
-//    public  function getDueFees(){
-//        $result = Student::select('id','student_name',DB::raw("get_fees_due_by_student_id(id) as due"))->get();
-//
-//        return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
-//
-//    }
 
-public function getDueFees(Request $request){
+    public function getDueFees(Request $request){
 
-
-    $result = StudentToCourse::select('student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student',DB::raw("get_total_due(student_to_courses.course_id,student_to_courses.student_id) as totalDue, ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
-             ->leftJoin('fees', function($join)
-             {
+        $data1 = StudentToCourse::select('courses.course_name','course_types.type','student_to_courses.fees_for_student','fees.fees_paid','fees.date')
+            ->leftJoin('fees', function($join)
+            {
                 $join->on('fees.course_id', '=', 'student_to_courses.course_id');
                 $join->on('fees.student_id','=','student_to_courses.student_id');
-             })
-             ->join('courses','courses.id','=','student_to_courses.course_id')
-             ->join('course_types','course_types.id','=','courses.course_type_id')
+            })
+            ->join('courses','courses.id','=','student_to_courses.course_id')
+            ->join('course_types','course_types.id','=','courses.course_type_id')
+            ->where('student_to_courses.student_id', '=', $request->student_id)
+            ->where('student_to_courses.course_id', '=', $request->course_id)
+            ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type','fees.fees_paid','fees.date')
+            ->get();
+
+
+        $data2 = StudentToCourse::select('student_to_courses.student_id','student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student','student_to_courses.inforce','student_to_courses.effective_date','student_to_courses.closing_date',DB::raw("get_total_due(student_to_courses.course_id,student_to_courses.student_id) as totalDue, ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
+            ->leftJoin('fees', function($join)
+            {
+                $join->on('fees.course_id', '=', 'student_to_courses.course_id');
+                $join->on('fees.student_id','=','student_to_courses.student_id');
+            })
+            ->join('courses','courses.id','=','student_to_courses.course_id')
+            ->join('course_types','course_types.id','=','courses.course_type_id')
             ->where('student_to_courses.student_id', '=', $request->student_id)
             ->where('student_to_courses.course_id', '=', $request->course_id)
             ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type')
             ->get();
 
+        return response()->json(['success'=>1,'data1'=>$data1,'data2'=>$data2],200,[],JSON_NUMERIC_CHECK);
+    }
+
+
+    public function getBillInfo($id){
+
+        $result = Fees::select('fees.student_id','fees.course_id','fees.fees_paid','fees.date','courses.course_name','course_types.type','students.student_name',DB::raw("get_fees_due(course_id,student_id) as due"))
+                  ->join('courses','courses.id','=','fees.course_id')
+                  ->join('course_types','course_types.id','=','courses.course_type_id')
+                  ->join('students','students.id','=','fees.student_id')
+                  ->where('student_id' , $id)
+                  ->where('fees.date' , date('y-m-d'))
+                  ->get();
+
+        return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
+
+    }
 
 
 
-             return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
-}
+
+
 
     /**
      * Show the form for creating a new resource.

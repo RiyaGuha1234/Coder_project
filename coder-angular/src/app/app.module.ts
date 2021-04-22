@@ -24,8 +24,8 @@ import { AuthComponent } from './pages/auth/auth.component';
 import {AuthInterceptorInterceptor} from './services/auth-interceptor.interceptor';
 import { OwnerComponent } from './pages/owner/owner.component';
 import { FeesComponent } from './pages/fees/fees.component';
-import { FeesDueComponent } from './pages/fees-due/fees-due.component';
 import { StudentToCourseComponent } from './pages/student-to-course/student-to-course.component';
+import { BillComponent } from './pages/bill/bill.component';
 
 
 
@@ -41,8 +41,8 @@ import { StudentToCourseComponent } from './pages/student-to-course/student-to-c
     AuthComponent,
     OwnerComponent,
     FeesComponent,
-    FeesDueComponent,
-    StudentToCourseComponent
+    StudentToCourseComponent,
+    BillComponent
   ],
   imports: [
     BrowserModule,

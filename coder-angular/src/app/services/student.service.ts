@@ -35,7 +35,8 @@ export class StudentService {
       contact : new FormControl('+91', [ Validators.required, Validators.maxLength(15)]),
       address: new FormControl(null),
       date: new FormControl(this.date),
-      effective_date: new FormControl(this.date)
+      // effective_date: new FormControl(this.date),
+      // closing_date: new FormControl(null,[Validators.required])
     });
 
   }
@@ -44,6 +45,7 @@ export class StudentService {
     console.log(this.studentForm.value);
     // return this.http.post('http://127.0.0.1:8000/api/saveStudent', this.studentForm.value)
     this.studentForm.value.date = formatDate(this.currentDate, 'yyyy-MM-dd' , 'en');
+    this.studentForm.value.closing_date = formatDate(this.studentForm.value.closing_date, 'yyyy-MM-dd' , 'en');
     this.studentForm.value.effective_date = formatDate( this.studentForm.value.effective_date, 'yyyy-MM-dd' , 'en');
     return this.http.post(GlobalVariable.API_URL + 'saveStudent', this.studentForm.value)
       .pipe( tap((response: {success: number, data: Student})  => {
@@ -83,6 +85,24 @@ export class StudentService {
           }
         }
       }));
+  }
+
+
+
+  getCourseByStudent(id){
+
+    return  this.http.get(GlobalVariable.API_URL + 'getCourseByStudent/' + id);
+
+  }
+
+  editCourseInfo(data){
+    console.log(data);
+    data.effective_date = formatDate(data.effective_date, 'yyyy-MM-dd', 'en');
+    if (data.closing_date){
+      data.closing_date = formatDate(data.closing_date, 'yyyy-MM-dd', 'en');
+    }
+    console.log(data);
+    return this.http.post(GlobalVariable.API_URL + 'editCourseInfo' , data);
   }
 
 

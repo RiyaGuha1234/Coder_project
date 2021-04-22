@@ -19,8 +19,6 @@ class CreateStudentsTable extends Migration
             $table->string('contact',20)->nullable(false);
             $table->string('address',100)->nullable(true);
             $table->date('date')->nullable(false);
-            $table->date('effective_date')->nullable(false);
-
             $table->tinyInteger('inforce')->default(1);
             $table->timestamps();
         });
