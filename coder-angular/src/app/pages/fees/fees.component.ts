@@ -37,6 +37,7 @@ export class FeesComponent implements OnInit {
   showDue = false;
   dueByStudent: any;
   feesPaid: any[];
+  savedBillIfo: any;
   billInfo: any;
   discountEnabled = false;
   constructor(private  studentService: StudentService , private  feesService: FeesService , public dialog: MatDialog) {
@@ -142,7 +143,7 @@ export class FeesComponent implements OnInit {
     let dialogConfig = new MatDialogConfig();
 
     dialogConfig = {
-      data: { billInfo: this.billInfo },
+      data: { savedBillIfo: this.savedBillIfo , billInfo: this.billInfo },
       width: '80%',   height : '95%',
       panelClass: 'custom-dialog-container'
     };

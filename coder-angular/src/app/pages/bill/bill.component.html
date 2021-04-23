@@ -1,7 +1,7 @@
 <div *ngIf="billInfo"  id ="printBillDiv" style="max-height: 85vh">
   <h4 mat-dialog-title style="text-align: center">CODER</h4>
   <hr mat-dialog-title>
-  <div mat-dialog-title style="text-align: center">Receipt</div>
+  <div mat-dialog-title style="text-align: center ; font-weight: bolder">BILL NUMBER : {{savedBillIfo.bill_number | uppercase}}</div>
   <div class="d-flex"  mat-dialog-title style="width: 100%">
     <div class="col-5" style="text-align: left ; font-weight: bolder">{{billInfo[0].student_name | uppercase}}</div>
     <div class="col-2"></div>

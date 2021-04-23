@@ -27,8 +27,6 @@ class StudentController extends Controller
         $student->contact = $request->contact;
         $student->address = $request->address;
         $student->date = $request->date;
-        $student->effective_date = $request->effective_date;
-        $student->closing_date = $request->closing_date;
         $student->save();
 
 

@@ -67,17 +67,22 @@ export class FeesService {
   }
 
   getBillInfo(data){
-   this.http.get(GlobalVariable.API_URL + 'getBillInfo/' + data).subscribe((response: {success: number, data: any}) => {
-     this.billInfoData = response.data;
-     this.billdataSub.next([...this.billInfoData]);
-
+   return this.http.get(GlobalVariable.API_URL + 'getBillInfo/' + data).subscribe((response: {success: number, data: any}) => {
+     if (response.data){
+       this.billInfoData = response.data;
+       this.billdataSub.next([...this.billInfoData]);
+     }
    });
   }
 
   setDiscount(data1, data2){
    return  this.http.post(GlobalVariable.API_URL + 'setDiscount', {studentId: data1 , courseId: data2});
-
   }
+
+  generateBill(billData){
+    return this.http.post(GlobalVariable.API_URL + 'saveBill', {billInfo: billData});
+  }
+
   private _serverError(err: any) {
     if (err instanceof Response) {
       return throwError('backend server error');

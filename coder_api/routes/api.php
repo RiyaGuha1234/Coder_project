@@ -7,6 +7,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentToCourseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeesController;
+use App\Http\Controllers\BillMasterController;
 
 
 /*
@@ -41,6 +42,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('setDiscount',[StudentToCourseController::class,'setDiscount']);
     Route::post('getCourseByStudent',[StudentController::class,'getCourseByStudent']);
     Route::post('editCourseInfo',[StudentToCourseController::class,'editCourseInfo']);
+    Route::post('saveBill',[BillMasterController::class,'saveBill']);
 });
 Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class,'login']);

@@ -11,6 +11,7 @@ import {ToWords} from 'to-words/dist/to-words';
 export class BillComponent implements OnInit {
   studentId: number;
   billInfo: any[];
+  savedBillIfo: any[];
   totalAmountPaid: number;
   toWords = new ToWords();
 
@@ -28,10 +29,16 @@ export class BillComponent implements OnInit {
 
     this.totalAmountPaid  = 0;
     this.feesService.billdataSubUpdateListener().subscribe((response) => {
+      if (response){
         this.billInfo = response;
-          for (let i = 0; i < this.billInfo.length ; i++){
-            this.totalAmountPaid = this.totalAmountPaid + this.billInfo[i].fees_paid;
+        for (let i = 0; i < this.billInfo.length ; i++){
+          this.totalAmountPaid = this.totalAmountPaid + this.billInfo[i].fees_paid;
         }
+        this.feesService.generateBill(this.billInfo).subscribe((billResponse: {success: number , data: any}) => {
+          this.savedBillIfo  = billResponse.data;
+        });
+      }
+
       });
     console.log(this.totalAmountPaid);
   }

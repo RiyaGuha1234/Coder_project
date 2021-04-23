@@ -67,7 +67,7 @@ class FeesController extends Controller
 
     public function getBillInfo($id){
 
-        $result = Fees::select('fees.student_id','fees.course_id','fees.fees_paid','fees.date','courses.course_name','course_types.type','students.student_name',DB::raw("get_fees_due(course_id,student_id) as due"))
+        $result = Fees::select('fees.student_id','fees.course_id','fees.fees_paid','fees.date','courses.course_name','course_types.type','students.student_name','fees.date',DB::raw("get_fees_due(course_id,student_id) as due"))
                   ->join('courses','courses.id','=','fees.course_id')
                   ->join('course_types','course_types.id','=','courses.course_type_id')
                   ->join('students','students.id','=','fees.student_id')
