@@ -15,15 +15,25 @@ class CreateDBFunctionsProcedureTable extends Migration
     public function up()
     {
       DB::unprepared('DROP FUNCTION IF EXISTS coder_db.get_total_due;
-                                CREATE FUNCTION coder_db.`get_total_due`(`param_course_id` INT, param_student_id INT) RETURNS double
-                                 DETERMINISTIC
-                                 BEGIN
+                            CREATE FUNCTION coder_db.`get_total_due`(`param_course_id` INT, param_student_id INT) RETURNS double
+                                DETERMINISTIC
+                            BEGIN
                                       DECLARE temp_total_fees double;
+                                      DECLARE temp_total_month_active int;
                                       DECLARE temp_total_month int;
+                                      DECLARE temp_total_month_inactive int;
+                                      DECLARE temp_inforce int;
                                       DECLARE temp_effective_date date;
+                                      DECLARE temp_closing_date date;
 
                                           select effective_date into temp_effective_date from student_to_courses where student_id = param_student_id AND course_id = param_course_id  ;
-                                          select if(ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date))) into temp_total_month;
+                                          select closing_date into temp_closing_date from student_to_courses where student_id = param_student_id AND course_id = param_course_id ;
+                                          select inforce into temp_inforce from student_to_courses where student_id = param_student_id AND course_id = param_course_id;
+
+                                          select if(ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date))) into temp_total_month_active;
+                                          select if(ABS(MONTH(temp_closing_date)-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(temp_closing_date))-MONTH(temp_effective_date)) into temp_total_month_inactive;
+
+                                          select if(temp_inforce = 0,temp_total_month_inactive,temp_total_month_active) into temp_total_month;
 
                                           select if(course_types.id =1,student_to_courses.fees_for_student * temp_total_month,student_to_courses.fees_for_student) into temp_total_fees
                                           from student_to_courses
@@ -41,14 +51,24 @@ class CreateDBFunctionsProcedureTable extends Migration
                                   DECLARE temp_total_fees_paid double;
                                   DECLARE temp_fees_due double;
                                   DECLARE temp_total_month int;
+                                  DECLARE temp_total_month_active int;
+                                  DECLARE temp_total_month_inactive int;
+                                  DECLARE temp_inforce int;
                                   DECLARE temp_effective_date date;
+                                  DECLARE temp_closing_date date;
                                   DECLARE temp_final_due double;
                                   DECLARE temp_discount double;
 
-                                         select discount into temp_discount from student_to_courses where student_id = param_student_id AND course_id = param_course_id  ;
-
+                                        select discount into temp_discount from student_to_courses where student_id = param_student_id AND course_id = param_course_id;
                                         select effective_date into temp_effective_date from student_to_courses where student_id = param_student_id AND course_id = param_course_id  ;
+                                        select closing_date into temp_closing_date from student_to_courses where student_id = param_student_id AND course_id = param_course_id ;
+                                        select inforce into temp_inforce from student_to_courses where student_id = param_student_id AND course_id = param_course_id;
+
+
                                         select if(ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date))) into temp_total_month;
+                                        select if(ABS(MONTH(temp_closing_date)-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(temp_closing_date)-MONTH(temp_effective_date))) into temp_total_month_inactive;
+
+                                        select if(temp_inforce = 0,temp_total_month_inactive,temp_total_month_active) into temp_total_month;
 
                                         select if(course_types.id =1,student_to_courses.fees_for_student * temp_total_month,student_to_courses.fees_for_student) into temp_total_fees
                                         from student_to_courses
