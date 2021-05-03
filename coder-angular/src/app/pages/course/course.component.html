@@ -1,0 +1,85 @@
+<div style="padding: 20px">
+  <div fxFlex="40">
+    <mat-card  style="background-color: powderblue ; margin: 20px">
+      <form [formGroup]= courseForm >
+        <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
+          <div style="padding: 3px">
+            <mat-form-field class="col-8">
+              <input matInput placeholder="Course Name" formControlName="course_name">
+            </mat-form-field>
+          </div>
+          <div style="padding: 3px">
+            <div fxFlex="50">
+              <mat-form-field>
+                <input matInput placeholder="Course Fees" formControlName="course_fees">
+              </mat-form-field>
+            </div>
+            <div fxFlex="50">
+              <ng-select bindLabel="Type" formControlName="course_type_id">
+                    <ng-option *ngFor="let item of courseTypeList" [value]="item.id">{{item.type}}</ng-option>
+                {{courseForm.value.type}}
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0">
+        <button mat-raised-button (click)="saveCourse()" [disabled]="!courseForm.valid" [hidden]="!showSave">Save</button>
+        <button mat-raised-button [disabled]="courseForm.pristine " [hidden]="showSave" (click)="updateCourse()">Update</button>
+        <button mat-raised-button (click)="clearForm()" [disabled]="!courseForm.value.course_name">Clear</button>
+      </div>
+    </mat-card>
+  </div>
+  <div fxFlex="60">
+    <mat-card  style="background-color: silver">
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style="; margin: 10px">
+        <div class="input-group rounded"  style = "width: 40%">
+          <input type="search" class="form-control rounded" placeholder="Search Student" aria-label="Search"
+                 [(ngModel)]="searchCourse"  aria-describedby="search-addon"  style="font-size: small"/>
+        </div>
+        <div class="input-group rounded"  style = "width: 40%">
+          <input type="search" class="form-control rounded" placeholder="Items per page" aria-label="Search"
+                 [(ngModel)]="pageSize"  aria-describedby="search-addon"  style="font-size: small"/>
+        </div>
+      </div>
+      <table class="table table-hover table-bordered">
+        <thead style="font-size: medium">
+        <th>SL NO</th>
+        <th>Course Name</th>
+        <th>Course Type</th>
+        <th>Course Fees</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </thead>
+        <tbody style="font-size: small ; color: darkblue" >
+        <tr *ngFor = "let indexOfElement = index ; let item of courseData  | filter : searchCourse | paginate: { itemsPerPage: pageSize, currentPage: p }">
+          <td>{{indexOfElement+1}}</td>
+          <td>{{item.course_name}}</td>
+          <td>{{item.type}}</td>
+          <td>₹ {{item.course_fees.toFixed(2)}}</td>
+          <td><button mat-button (click)="populateCouseForm(item)" style="color: darkblue"><mat-icon>edit</mat-icon></button></td>
+          <td><button mat-button (click)="deleteCourse(item.id)" style="color: red"><mat-icon>delete</mat-icon></button></td>
+        </tr>
+        </tbody>
+      </table>
+      <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+        <!--    https://www.npmjs.com/package/ngx-pagination-->
+        <!--    npm i ngx-pagination-->
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls  id=""
+                              (pageChange)="p=($event)"
+                              maxSize="5"
+                              directionLinks="true"
+                              autoHide="true"
+                              responsive="true"
+                              previousLabel="Previous"
+                              nextLabel="Next"
+                              screenReaderPaginationLabel="Pagination"
+                              screenReaderPageLabel="page"
+                              screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+    </mat-card>
+
+  </div>
+</div>

@@ -8,6 +8,7 @@ import {FeesComponent} from './pages/fees/fees.component';
 
 import {StudentToCourseComponent} from './pages/student-to-course/student-to-course.component';
 import {BillComponent} from './pages/bill/bill.component';
+import {CourseComponent} from './pages/course/course.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'owner', component: OwnerComponent},
   {path: 'fees', component: FeesComponent},
   {path: 'studentToCourse', component: StudentToCourseComponent},
-  {path: 'bill/:id', component: BillComponent}
+  {path: 'bill/:id', component: BillComponent},
+  {path: 'course', component: CourseComponent}
 ];
 
 @NgModule({

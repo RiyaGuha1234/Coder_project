@@ -11,20 +11,27 @@ import {Md5} from 'ts-md5';
 export class AuthComponent implements OnInit {
   loginForm: FormGroup;
   errorMsg: string;
+  isAuthenticated =  false;
+  isSubmiited = false;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isAuthenticated = false;
+    this.isSubmiited = false;
     this.loginForm = this.authService.loginForm;
 
   }
   login(){
     const md5 = new Md5();
     const passwordMd5 = md5.appendStr(this.loginForm.value.password).end();
-
+    this.isSubmiited = true;
     this.authService.login({userName: this.loginForm.value.user_name , password: passwordMd5}).subscribe((response: {success: number, userData: any , token: any}) => {
       if (response.token === null){
         this.errorMsg = response.userData;
+      }
+      else{
+        this.isAuthenticated = true;
       }
     });
   }

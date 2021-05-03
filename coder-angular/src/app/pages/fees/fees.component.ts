@@ -29,8 +29,6 @@ export class FeesComponent implements OnInit {
   p = 1;
   minDate = new Date(2010, 11, 2);
   maxDate = new Date(2023, 3, 2);
-  // currentDate = new Date();
-  // feesDate =  formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
   currentDate = new Date();
   feesDate =  formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
   courseListByStudent: any[] = [];
@@ -40,6 +38,11 @@ export class FeesComponent implements OnInit {
   savedBillIfo: any;
   billInfo: any;
   discountEnabled = false;
+  isPrintReceiptEnabled: boolean;
+  showDiscount = false;
+  discount: number;
+  studentId: number;
+  courseId: number;
   constructor(private  studentService: StudentService , private  feesService: FeesService , public dialog: MatDialog) {
     this.studentList = this.studentService.getStudents();
   }
@@ -50,6 +53,8 @@ export class FeesComponent implements OnInit {
     this.searchString = null;
     this.pageSize = 5;
     this.feesEntryForm = this.feesService.feesEntryForm;
+    this.isPrintReceiptEnabled =  false;
+    this.showDiscount = false;
     this.studentService.studentDataSubUpdateListener().subscribe((response) => {
       this.studentList = response;
     });
@@ -58,16 +63,26 @@ export class FeesComponent implements OnInit {
     });
   }
   populateFeesFormByStudent(item){
+    this.isPrintReceiptEnabled = false;
     this.showDue = false;
-    this.feesService.getCourseByStudent(item.id).subscribe((response: {success: number , data: any[]}) => {
-      this.courseListByStudent = response.data;
-    });
+    console.log('isPrintReceiptEnabled');
+    console.log(this.isPrintReceiptEnabled);
     this.feesEntryForm.patchValue({id: item.id , student_name: item.student_name});
     const x = formatDate(this.currentDate, 'yyyy-MM-dd', 'en');
     if (x > item.closing_date){
       this.discountEnabled = true;
-      console.log(this.discountEnabled);
+      // console.log(this.discountEnabled);
     }
+    this.feesService.getCourseByStudent(item.id).subscribe((response: {success: number , data: any[]}) => {
+      if (response.data){
+        this.courseListByStudent = response.data;
+        this.feesService.getBillInfo(item.id).subscribe((billResponse: {success: number, data: any}) => {
+          if (billResponse.data.length > 0 ){
+            this.isPrintReceiptEnabled = true;
+          }
+        });
+      }
+    });
 
   }
 
@@ -79,16 +94,6 @@ export class FeesComponent implements OnInit {
 
 
   submitFeesByStudent(item){
-
-    // console.log(item);
-    // const formDate = this.feesEntryForm.value.date;
-    // console.log( formDate);
-
-
-
-
-    console.log( this.feesEntryForm.value.date);
-
     if (this.feesEntryForm.value.fees === null){
       Swal.fire('Please enter fees before submitting !!!', '', 'error');
     }
@@ -107,13 +112,11 @@ export class FeesComponent implements OnInit {
               Swal.fire('fees has been submiited',
                 '',
                 'success');
-              // this.feesEntryForm.reset();
-              // this.feesEntryForm.patchValue({student_name: item.student_name, date: this.feesDate});
               this.feesEntryForm.controls[('fees')].reset();
-              this.feesService.viewDueFees(item);
-              // this.feesDueService.getUpdatedDueFeesList();
+              this.feesService.viewDueFees(item.student_id, item.course_id);
               this.feesEntryForm.patchValue({date: this.feesDate});
               this.showDue = false;
+              this.isPrintReceiptEnabled = true;
             }
           }, (error) => {
             Swal.fire(error.statusText, '', 'error');
@@ -123,8 +126,10 @@ export class FeesComponent implements OnInit {
     }
   }
   viewDue(item){
-    console.log(item);
-    this.feesService.viewDueFees(item).subscribe((response:{success: number , data1: any, data2: any}) => {
+    this.studentId =  item.student_id;
+    this.courseId =  item.course_id;
+    this.showDiscount = false;
+    this.feesService.viewDueFees( this.studentId, this.courseId).subscribe((response: {success: number , data1: any, data2: any}) => {
       if (response.data2){
         this.dueByStudent = response.data2;
         console.log(this.dueByStudent[0]);
@@ -139,23 +144,40 @@ export class FeesComponent implements OnInit {
 
 
   openDialog() {
-    this.feesService.getBillInfo(this.feesEntryForm.value.id);
+    this.feesService.getBillInfo(this.feesEntryForm.value.id).subscribe();
     let dialogConfig = new MatDialogConfig();
-
     dialogConfig = {
       data: { savedBillIfo: this.savedBillIfo , billInfo: this.billInfo },
-      width: '80%',   height : '95%',
+      width: '80%' , height: '90%',
       panelClass: 'custom-dialog-container'
     };
     this.dialog.open(BillComponent  , dialogConfig);
   }
 
 
-  setDiscount(studentId, courseId){
-      this.feesService.setDiscount(studentId, courseId).subscribe((response:{success: number , data: any}) => {
-        if (response){
+
+  setDiscount(){
+    this.showDiscount  = true;
+  }
+
+  onSubmit(data){
+      this.feesService.setDiscount( this.studentId, this.courseId, data).subscribe((response: {success: number , data: any}) => {
+        if (response.data){
           Swal.fire('Success', 'Discount has been set', 'success');
+          this.feesService.viewDueFees(this.studentId, this.courseId).subscribe((newResponse: {success: number , data1: any, data2: any}) => {
+            if (newResponse.data2){
+              this.dueByStudent = newResponse.data2;
+              console.log(this.dueByStudent[0]);
+              this.showDue = true;
+            }
+            if (newResponse.data1){
+              this.feesPaid  = newResponse.data1;
+            }
+          });
+          this.discount = null;
         }
+      }, error => {
+        Swal.fire('Error', 'Discount has not been set', 'error');
       });
   }
 

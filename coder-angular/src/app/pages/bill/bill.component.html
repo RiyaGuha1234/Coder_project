@@ -1,45 +1,65 @@
-<div *ngIf="billInfo"  id ="printBillDiv" style="max-height: 85vh">
-  <h4 mat-dialog-title style="text-align: center">CODER</h4>
-  <hr mat-dialog-title>
-  <div mat-dialog-title style="text-align: center ; font-weight: bolder">BILL NUMBER : {{savedBillIfo.bill_number | uppercase}}</div>
-  <div class="d-flex"  mat-dialog-title style="width: 100%">
-    <div class="col-5" style="text-align: left ; font-weight: bolder">{{billInfo[0].student_name | uppercase}}</div>
-    <div class="col-2"></div>
-    <div class="col-5" style="text-align: right ;font-weight: bolder">BILL DATE : {{billInfo[0].date | date: 'dd-MM-YYYY'}}</div>
+<div  style="background-color: transparent ; align-content: center ; text-align: center">
+  <div [hidden]="showBill" id="waitingDiv" style="text-align: center ; background-color: transparent">
+<!--    <h1>Loading....</h1>-->
+    <img src="../../../assets/background/searching2.gif" alt="Loading....">
   </div>
-  <div mat-dialog-content>
-    <table  id ="bill-table" style= "width: 100% ; font-size: medium"  >
-      <thead style="font-size: small">
-      <th>DATE</th>
-      <th>COURSE</th>
-      <th>COURSE TYPE</th>
-      <th>AMT PAID</th>
-      <th>BALANCE DUE</th>
-      <th></th>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of billInfo ">
-        <td>{{item.date | date: 'dd-MM-yyy'}}</td>
-        <td>{{item.course_name}}</td>
-        <td>{{item.type}}</td>
-        <td>₹ {{item.fees_paid.toFixed(2)}}</td>
-        <td>₹ {{item.due.toFixed(2)}}</td>
-      </tr>
-      <tr>
-        <td>TOTAL AMOUNT PAID : </td>
-        <td>(Rupees {{convert()}} only)</td>
-        <td></td>
-        <td>₹ {{totalAmountPaid.toFixed(2)}}</td>
-      </tr>
-      <tr></tr>
-      </tbody>
-    </table>
+  <div *ngIf="billInfo" style="height: 300vh; background-color:whitesmoke" [hidden]="!showBill">
+    <div style="text-align: right; height: 1px"  >
+      <button mat-button   [printStyle]="printDivStyle"
+              printSectionId="printBillDiv"
+              ngxPrint><mat-icon>print</mat-icon>
+      </button>
+      <button  mat-button ><mat-icon>cloud_download</mat-icon></button>
+      <button  mat-button class="btn btn-danger rounded-pill" [mat-dialog-close]="true" cdkFocusInitial><mat-icon>close</mat-icon></button>
+
+    </div>
+    <div id ="printBillDiv"  style="height: 200px;">
+      <p style="text-align: center ; font-weight: bolder">CODER</p>
+      <hr>
+      <div  *ngIf="savedBillIfo" style="text-align: center ; font-weight: bolder ; font-size: medium ">BILL NUMBER : {{savedBillIfo.bill_number | uppercase}}</div>
+      <div class="d-flex"  style="width: 100%">
+        <div class="col-5" style="text-align: left ; font-weight: bolder ; font-size: medium">{{billInfo[0].student_name | uppercase}}</div>
+        <div class="col-2"></div>
+        <div class="col-5" style="text-align: right ;font-weight: bolder ; font-size: medium">BILL DATE : {{billInfo[0].date | date: 'dd-MM-YYYY'}}</div>
+      </div>
+      <div>
+        <table  id ="bill-table" style= "width: 100% ; font-size: small">
+          <thead style="font-size: small">
+          <th>SL NO</th>
+          <th>COURSE</th>
+          <th>COURSE TYPE</th>
+          <th>AMT PAID</th>
+          <th>BALANCE DUE</th>
+          <th></th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of billInfo ; let indexOfElement = index ">
+            <td>{{indexOfElement+1}}</td>
+            <td>{{item.course_name}}</td>
+            <td>{{item.type}}</td>
+            <td>₹ {{item.fees_paid.toFixed(2)}}</td>
+            <td>₹ {{item.due.toFixed(2)}}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder ; font-size: smaller">TOTAL AMOUNT PAID : </td>
+            <td style="font-weight: bolder; font-size: smaller">(RUPEES {{convert() | uppercase}} ONLY)</td>
+            <td></td>
+            <td>₹ {{totalAmountPaid.toFixed(2)}}</td>
+          </tr>
+          <tr></tr>
+          </tbody>
+        </table>
+        <hr>
+        <div style="text-align: center ; margin-bottom: 2px">
+          <p>Thank you from CODER</p>
+        </div>
+<!--        <div mat-dialog-actions style="height: 2px" [hidden]="!showBill">-->
+<!--          <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>-->
+<!--        </div>-->
+      </div>
+    </div>
   </div>
 </div>
-<div style="text-align: center">
-  <button mat-raised-button   [printStyle]="printDivStyle"
-          printSectionId="printBillDiv"
-          ngxPrint><mat-icon>print</mat-icon></button>
-</div>
+
 
 

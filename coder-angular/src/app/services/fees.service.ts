@@ -21,6 +21,7 @@ export class FeesService {
   billdataSub = new Subject<any>();
 
 
+
   billdataSubUpdateListener(){
     return this.billdataSub.asObservable();
   }
@@ -56,27 +57,26 @@ export class FeesService {
     return  this.http.get(GlobalVariable.API_URL + 'getCourseByStudent/' + id);
   }
 
-  viewDueFees(data){
-    // return this.http.post('http://127.0.0.1:8000/api/dueFees', data).pipe(tap((response: {success: number, data: any})  => {
-    return this.http.post(GlobalVariable.API_URL + 'dueFees', data).pipe(tap((response: {success: number, data1: any, data2: any})  => {
-      this.dueByStudentData = response.data2;
+  viewDueFees(data1 , data2){
+    return this.http.post(GlobalVariable.API_URL + 'dueFees', {studentId: data1, courseId: data2}).pipe(tap((response: {success: number, data1: any, data2: any})  => {
+      this.dueByStudentData = response.data1;
       this.dueByStudentDataSub.next([...this.dueByStudentData]);
-
-
     }));
   }
 
   getBillInfo(data){
-   return this.http.get(GlobalVariable.API_URL + 'getBillInfo/' + data).subscribe((response: {success: number, data: any}) => {
+   return this.http.get(GlobalVariable.API_URL + 'getBillInfo/' + data).pipe(tap( (response: {success: number, data: any}) => {
      if (response.data){
        this.billInfoData = response.data;
        this.billdataSub.next([...this.billInfoData]);
      }
-   });
+   }));
   }
 
-  setDiscount(data1, data2){
-   return  this.http.post(GlobalVariable.API_URL + 'setDiscount', {studentId: data1 , courseId: data2});
+  setDiscount(data1, data2, data3){
+   return  this.http.post(GlobalVariable.API_URL + 'setDiscount', {studentId: data1 , courseId: data2 , discount: data3})
+     .pipe(catchError(this._serverError),(tap((response: {success: number , data: any}) => {
+     })));
   }
 
   generateBill(billData){

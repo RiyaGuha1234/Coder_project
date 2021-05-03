@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
+    public function  setCourseType(){
+        return $this->belongsTo('App\Models\CourseType','course_type_id');
+    }
+
 }

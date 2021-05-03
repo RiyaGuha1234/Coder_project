@@ -50,7 +50,7 @@ class BillMasterController extends Controller
                     . $customVoucher->delimiter
                     . $customVoucher->suffix
                     . $customVoucher->delimiter
-                    . str_pad($customVoucher->last_counter, 5, STR_PAD_LEFT)
+                    . str_pad($customVoucher->last_counter, 5, 0,STR_PAD_LEFT)
                     . $customVoucher->delimiter
                     . $customVoucher->accounting_year;
                 $billMaster->student_id = $billData[0]['student_id'];

@@ -15,6 +15,7 @@ export class AuthService {
   userSub = new Subject<User>();
   errorMsg: string;
 
+
   constructor(private http: HttpClient, private router: Router) {
     this.loginForm = new FormGroup({
       user_name: new FormControl(null, [Validators.required]),

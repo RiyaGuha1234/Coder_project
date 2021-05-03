@@ -30,8 +30,10 @@ export class StudentComponent implements OnInit {
   searchString: string;
   searchCourse: string;
   pageSize: number;
+  coursePageSize: number;
   page: number;
   p = 1;
+  p1 = 1;
   showSave = true;
   showAddedCourse = false;
   studentId: number;
@@ -52,8 +54,9 @@ export class StudentComponent implements OnInit {
     this.studentForm = this.studentService.studentForm;
     this.showCourses = false;
     this.page = 1;
-    this.pageSize = 5;
+    this.pageSize = 4;
     this.showAddedCourse = false;
+    this.coursePageSize = 4;
 
     this.studentService.studentDataSubUpdateListener().subscribe((response) => {
       this.studentList = response;

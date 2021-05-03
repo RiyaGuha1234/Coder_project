@@ -34,6 +34,8 @@ class FeesController extends Controller
 
     public function getDueFees(Request $request){
 
+//        return $request->studentId;
+
         $data1 = StudentToCourse::select('courses.course_name','course_types.type','student_to_courses.fees_for_student','fees.fees_paid','fees.date')
             ->leftJoin('fees', function($join)
             {
@@ -42,13 +44,13 @@ class FeesController extends Controller
             })
             ->join('courses','courses.id','=','student_to_courses.course_id')
             ->join('course_types','course_types.id','=','courses.course_type_id')
-            ->where('student_to_courses.student_id', '=', $request->student_id)
-            ->where('student_to_courses.course_id', '=', $request->course_id)
+            ->where('student_to_courses.student_id', '=', $request->studentId)
+            ->where('student_to_courses.course_id', '=', $request->courseId)
             ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type','fees.fees_paid','fees.date')
             ->get();
 
 
-        $data2 = StudentToCourse::select('student_to_courses.student_id','student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student','student_to_courses.inforce','student_to_courses.effective_date','student_to_courses.closing_date',DB::raw("get_total_due(student_to_courses.course_id,student_to_courses.student_id) as totalDue, ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
+        $data2 = StudentToCourse::select('student_to_courses.student_id','student_to_courses.discount','student_to_courses.course_id','courses.course_name','course_types.type','student_to_courses.fees_for_student','student_to_courses.inforce','student_to_courses.effective_date','student_to_courses.closing_date',DB::raw("get_total_due(student_to_courses.course_id,student_to_courses.student_id) as totalDue, ifNull(sum(fees.fees_paid),0) as paid , get_fees_due(student_to_courses.course_id, student_to_courses.student_id)  as due"))
             ->leftJoin('fees', function($join)
             {
                 $join->on('fees.course_id', '=', 'student_to_courses.course_id');
@@ -56,8 +58,8 @@ class FeesController extends Controller
             })
             ->join('courses','courses.id','=','student_to_courses.course_id')
             ->join('course_types','course_types.id','=','courses.course_type_id')
-            ->where('student_to_courses.student_id', '=', $request->student_id)
-            ->where('student_to_courses.course_id', '=', $request->course_id)
+            ->where('student_to_courses.student_id', '=', $request->studentId)
+            ->where('student_to_courses.course_id', '=', $request->courseId)
             ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type')
             ->get();
 

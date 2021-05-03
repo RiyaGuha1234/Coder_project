@@ -55,13 +55,19 @@ $base-color: #c6538c;
 body{
   min-height: 100%;
   width: 100%;
-  background-color: transparent;
+  margin: 70px;
+  background-color: whitesmoke;
   //@include linear-gradient(to bottom, $color-red 0%, #e88007 50%, #e8af0a 100%);
-  background-image: url("assets/background/codeImge2.jpg");
-  //opacity: 0.5;
+  //background-image: url("assets/background/codeImge2.jpg");
+  //background-image: url("assets/background/logo.jpeg");
   background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
+  background-size: contain;
+  position: page;
+  font-family: Arial;
+  background-position: center;
+
+
+
 }
 .layer{
   background-color: rgba(0, 0, 0, 0.8);
@@ -119,5 +125,6 @@ body{
   color: black;
 }
 img {
-  opacity: 0.1;
+  opacity: 1;
+  align-self: center;
 }

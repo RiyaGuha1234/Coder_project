@@ -26,6 +26,9 @@ import { OwnerComponent } from './pages/owner/owner.component';
 import { FeesComponent } from './pages/fees/fees.component';
 import { StudentToCourseComponent } from './pages/student-to-course/student-to-course.component';
 import { BillComponent } from './pages/bill/bill.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { PictureCarouselComponent } from './pages/owner/picture-carousel/picture-carousel.component';
+import { CourseComponent } from './pages/course/course.component';
 
 
 
@@ -42,7 +45,9 @@ import { BillComponent } from './pages/bill/bill.component';
     OwnerComponent,
     FeesComponent,
     StudentToCourseComponent,
-    BillComponent
+    BillComponent,
+    PictureCarouselComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +66,7 @@ import { BillComponent } from './pages/bill/bill.component';
     NgxPaginationModule,
     MatFormFieldModule,
     MatIconModule,
+    MatDialogModule
 
 
   ],

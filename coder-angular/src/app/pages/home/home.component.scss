@@ -1,0 +1,82 @@
+#home{
+  animation-name: test;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+  animation-delay: 4s;
+  margin: 30px;
+}
+
+//@keyframes test {
+//  0%   {background-image: url("../../../assets/background/finalCover.jpg"); background-size: cover; background-repeat: no-repeat}
+//  25%  {background-image: url("../../../assets/carousel/coding_2.jpg");  background-size: cover; background-repeat: no-repeat}
+//  50%  {background-image: url("../../../assets/carousel/coding_3.jpg"); background-size: cover; background-repeat: no-repeat}
+//  75%  {background-image: url("../../../assets/carousel/coding_4.jpg");  background-size: cover; background-repeat: no-repeat}
+//  100% {background-image: url("../../../assets/carousel/coding_5.jpg");  background-size: cover; background-repeat: no-repeat}
+//  125% {background-image: url("../../../assets/carousel/coding_1.jpg");  background-size: cover; background-repeat: no-repeat}
+//}
+
+@keyframes test {
+  0%   {background-image: url("../../../assets/carousel/kelly-sikkema-37Gug7AWjoo-unsplash.jpg"); background-size: cover; background-repeat: no-repeat ;}
+  25%  {background-image: url("../../../assets/carousel/modified-goran-ivos-iOykDIkZLQw-unsplash.jpg");  background-size: cover; background-repeat: no-repeat}
+  50%  {background-image: url("../../../assets/carousel/robo-wunderkind-hLvQ4-QEBAE-unsplash.jpg"); background-size: cover; background-repeat: no-repeat}
+  75%  {background-image: url("../../../assets/carousel/modified -christopher-gower-m_HRfLhgABo-unsplash.jpg");  background-size: cover; background-repeat: no-repeat}
+  100% {background-image: url("../../../assets/carousel/coding_4.jpg");  background-size: cover; background-repeat: no-repeat}
+  //125% {background-image: url("../../../assets/carousel/ben-mullins-je240KkJIuA-unsplash.jpg");  background-size: cover; background-repeat: no-repeat}
+}
+
+
+#image-div{
+  animation-timing-function: ease-out;
+  animation-duration: 4s;
+}
+.fade {
+  animation: fadeIn ease 4s;
+  //-webkit-animation: fadeIn ease 10s;
+  //-moz-animation: fadeIn ease 10s;
+  //-o-animation: fadeIn ease 10s;
+  //-ms-animation: fadeIn ease 10s;
+}@keyframes fadeIn {
+   0% {
+     opacity:1;
+   }
+   100% {
+     opacity:0;
+   }
+ }
+
+//@-moz-keyframes fadeIn {
+//  0% {
+//    opacity:0;
+//  }
+//  100% {
+//    opacity:1;
+//  }
+//}
+//
+//@-webkit-keyframes fadeIn {
+//  0% {
+//    opacity:0;
+//  }
+//  100% {
+//    opacity:1;
+//  }
+//}
+//
+//@-o-keyframes fadeIn {
+//  0% {
+//    opacity:0;
+//  }
+//  100% {
+//    opacity:1;
+//  }
+//}
+//
+//@-ms-keyframes fadeIn {
+//  0% {
+//    opacity: 0;
+//  }
+//  100% {
+//    opacity: 1;
+//  }
+//}

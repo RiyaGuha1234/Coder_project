@@ -56,7 +56,7 @@ class StudentToCourseController extends Controller
                   ->where('course_id',$request->courseId)
                   ->first();
 
-        $result->inforce = 0;
+        $result->discount = $request->discount;
         $result->update();
 
         return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);

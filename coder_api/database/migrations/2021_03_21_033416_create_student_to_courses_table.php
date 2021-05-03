@@ -22,6 +22,7 @@ class CreateStudentToCoursesTable extends Migration
             $table ->foreign('course_id')->references('id')->on('courses');
 
             $table->double('fees_for_student')->nullable(false);
+            $table->double('discount')->default(0);
             $table->date('effective_date')->nullable(true);
             $table->date('closing_date')->nullable(true);
 

@@ -43,8 +43,6 @@ class StudentController extends Controller
         $student->student_name = $request->student_name;
         $student->contact = $request->contact;
         $student->address = $request->address;
-        $student->effective_date = $request->effective_date;
-        $student->closing_date = $request->closing_date;
         $student->update();
 
         if($student){
@@ -56,6 +54,7 @@ class StudentController extends Controller
     }
 
     public  function  delete($id){
+
         $student = Student::destroy($id);
         if($student){
             return response()->json(['success'=>1,'data'=>$student],200,[],JSON_NUMERIC_CHECK);

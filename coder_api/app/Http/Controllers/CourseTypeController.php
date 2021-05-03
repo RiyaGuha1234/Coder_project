@@ -14,7 +14,9 @@ class CourseTypeController extends Controller
      */
     public function index()
     {
-        //
+        $data = CourseType::all();
+
+        return response()->json(['success'=>100,'data'=>$data],200,[],JSON_NUMERIC_CHECK);
     }
 
     /**
