@@ -67,14 +67,13 @@ class FeesController extends Controller
     }
 
 
-    public function getBillInfo($id){
-
+    public function getBillInfo(Request $request){
         $result = Fees::select('fees.student_id','fees.course_id','fees.fees_paid','fees.date','courses.course_name','course_types.type','students.student_name','fees.date',DB::raw("get_fees_due(course_id,student_id) as due"))
                   ->join('courses','courses.id','=','fees.course_id')
                   ->join('course_types','course_types.id','=','courses.course_type_id')
                   ->join('students','students.id','=','fees.student_id')
-                  ->where('student_id' , $id)
-                  ->where('fees.date' , date('y-m-d'))
+                  ->where('student_id' , $request->id)
+                  ->where('fees.date' , $request->date)
                   ->get();
 
         return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);

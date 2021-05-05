@@ -80,6 +80,35 @@ class BillMasterController extends Controller
 
     }
 
+    public function getBilledStudents(){
+        $data =  BillMaster::select('students.student_name','bill_masters.student_id')
+                 ->join('students','students.id','=','bill_masters.student_id')
+                 ->groupBy('bill_masters.student_id')
+                 ->get();
+
+        return  response()->json(['success'=>100,'data'=>$data],200,[],JSON_NUMERIC_CHECK);
+    }
+
+    public  function getBillDetails($id){
+        $data = BillMaster::select()
+                            ->where('student_id',$id)
+                            ->get();
+
+        return  response()->json(['success'=>100,'data'=>$data],200,[],JSON_NUMERIC_CHECK);
+    }
+
+
+    public  function  getBill($id){
+        $data = BillMaster::select('bill_masters.id','bill_masters.bill_number','bill_masters.student_id','bill_masters.bill_date','bill_details.course_id','bill_details.paid','bill_details.due','courses.course_name','course_types.type','students.student_name')
+                ->join('bill_details','bill_masters.id','=','bill_details.bill_master_id')
+                ->join('courses','courses.id','=','bill_details.course_id')
+                ->join('course_types','course_types.id','=','courses.course_type_id')
+                ->join('students','students.id','=','bill_masters.student_id')
+                ->where('bill_masters.id' , $id)
+                ->get();
+
+        return  response()->json(['success'=>100,'data'=>$data],200,[],JSON_NUMERIC_CHECK);
+    }
     /**
      * Show the form for creating a new resource.
      *

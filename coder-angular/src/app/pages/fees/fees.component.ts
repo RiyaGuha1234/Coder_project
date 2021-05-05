@@ -76,11 +76,11 @@ export class FeesComponent implements OnInit {
     this.feesService.getCourseByStudent(item.id).subscribe((response: {success: number , data: any[]}) => {
       if (response.data){
         this.courseListByStudent = response.data;
-        this.feesService.getBillInfo(item.id).subscribe((billResponse: {success: number, data: any}) => {
-          if (billResponse.data.length > 0 ){
-            this.isPrintReceiptEnabled = true;
-          }
-        });
+        // this.feesService.getBillInfo(item.id).subscribe((billResponse: {success: number, data: any}) => {
+        //   if (billResponse.data.length > 0 ){
+        //     this.isPrintReceiptEnabled = true;
+        //   }
+        // });
       }
     });
 
@@ -144,14 +144,27 @@ export class FeesComponent implements OnInit {
 
 
   openDialog() {
-    this.feesService.getBillInfo(this.feesEntryForm.value.id).subscribe();
-    let dialogConfig = new MatDialogConfig();
-    dialogConfig = {
-      data: { savedBillIfo: this.savedBillIfo , billInfo: this.billInfo },
-      width: '80%' , height: '90%',
-      panelClass: 'custom-dialog-container'
-    };
-    this.dialog.open(BillComponent  , dialogConfig);
+    Swal.fire({
+      title: 'Are you sure to generate the bill?',
+      text: '',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm ?',
+      cancelButtonText: 'Decline'
+    }).then((result) => {
+        if (result.value){
+          this.feesService.getBillInfo().subscribe();
+          // this.feesService.getBillInfo();
+
+          let dialogConfig = new MatDialogConfig();
+          dialogConfig = {
+            data: { savedBillIfo: this.savedBillIfo , billInfo: this.billInfo },
+            width: '80%' , height: '90%',
+            panelClass: 'custom-dialog-container'
+          };
+          this.dialog.open(BillComponent  , dialogConfig);
+        }
+    });
   }
 
 

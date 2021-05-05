@@ -1,0 +1,66 @@
+<div  style="background-color: transparent ; align-content: center ; text-align: center">
+<!--  <div [hidden]="showBill" id="waitingDiv" style="text-align: center ; background-color: transparent">-->
+<!--    &lt;!&ndash;    <h1>Loading....</h1>&ndash;&gt;-->
+<!--    <img src="../../../assets/background/searching2.gif" alt="Loading....">-->
+<!--  </div>-->
+  <div *ngIf="viewBillData" style="height: 300vh; background-color:whitesmoke" [hidden]="!showBill">
+    <div style="text-align: right; height: 1px"  >
+<!--      <button mat-button   [printStyle]="printDivStyle"-->
+<!--              printSectionId="printBillDiv"-->
+<!--              ngxPrint><mat-icon>print</mat-icon>-->
+<!--      </button>-->
+      <button  mat-button ><mat-icon>cloud_download</mat-icon></button>
+      <button  mat-button class="btn btn-danger rounded-pill" [mat-dialog-close]="true" ><mat-icon>close</mat-icon></button>
+
+    </div>
+    <div id ="printBillDiv"  style="height: 200px;">
+      <p style="text-align: center ; font-weight: bolder">CODER</p>
+      <hr>
+      <div  *ngIf="viewBillData" style="text-align: center ; font-weight: bolder ; font-size: medium ">BILL NUMBER : {{viewBillData[0].bill_number | uppercase}}</div>
+      <div class="d-flex"  style="width: 100%">
+        <div class="col-5" style="text-align: left ; font-weight: bolder ; font-size: medium">{{viewBillData[0].student_name | uppercase}}</div>
+        <div class="col-2"></div>
+        <div class="col-5" style="text-align: right ;font-weight: bolder ; font-size: medium">BILL DATE : {{viewBillData[0].bill_date | date: 'dd-MM-YYYY'}}</div>
+      </div>
+      <div>
+        <table  id ="bill-table" style= "width: 100% ; font-size: small">
+          <thead style="font-size: small">
+          <th>SL NO</th>
+          <th>COURSE</th>
+          <th>COURSE TYPE</th>
+          <th>AMT PAID</th>
+          <th>BALANCE DUE</th>
+          <th></th>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of viewBillData ; let indexOfElement = index ">
+            <td>{{indexOfElement+1}}</td>
+            <td>{{item.course_name}}</td>
+            <td>{{item.type}}</td>
+            <td>₹ {{item.paid.toFixed(2)}}</td>
+            <td>₹ {{item.due.toFixed(2)}}</td>
+          </tr>
+          <tr>
+            <td style="font-weight: bolder ; font-size: smaller">TOTAL AMOUNT PAID : </td>
+            <td style="font-weight: bolder; font-size: smaller">(RUPEES {{convert() | uppercase}} ONLY)</td>
+            <td></td>
+            <td>₹ {{totalAmountPaid.toFixed(2)}}</td>
+          </tr>
+          <tr></tr>
+          </tbody>
+        </table>
+        <hr>
+        <div style="text-align: center ; margin-bottom: 2px">
+          <p>Thank you from CODER</p>
+        </div>
+        <!--        <div mat-dialog-actions style="height: 2px" [hidden]="!showBill">-->
+        <!--          <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>-->
+        <!--        </div>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -29,6 +29,8 @@ import { BillComponent } from './pages/bill/bill.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { PictureCarouselComponent } from './pages/owner/picture-carousel/picture-carousel.component';
 import { CourseComponent } from './pages/course/course.component';
+import { BillListComponent } from './pages/bill-list/bill-list.component';
+import { ViewBillComponent } from './pages/view-bill/view-bill.component';
 
 
 
@@ -47,7 +49,9 @@ import { CourseComponent } from './pages/course/course.component';
     StudentToCourseComponent,
     BillComponent,
     PictureCarouselComponent,
-    CourseComponent
+    CourseComponent,
+    BillListComponent,
+    ViewBillComponent
   ],
   imports: [
     BrowserModule,

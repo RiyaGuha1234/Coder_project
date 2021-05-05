@@ -17,7 +17,7 @@ export class FeesService {
   dueByStudentData: any;
   courseByStudent: any;
   dueByStudentDataSub = new Subject<any>();
-  billInfoData: any;
+  billInfoData: any[] = [];
   billdataSub = new Subject<any>();
 
 
@@ -64,12 +64,16 @@ export class FeesService {
     }));
   }
 
-  getBillInfo(data){
-   return this.http.get(GlobalVariable.API_URL + 'getBillInfo/' + data).pipe(tap( (response: {success: number, data: any}) => {
-     if (response.data){
-       this.billInfoData = response.data;
-       this.billdataSub.next([...this.billInfoData]);
-     }
+  getBillInfo(){
+    // console.log('data');
+    this.feesEntryForm.value.date = formatDate(this.currentDate , 'yyyy/MM/dd', 'en');
+    console.log(this.feesEntryForm.value);
+    return this.http.post(GlobalVariable.API_URL + 'getBillInfo', this.feesEntryForm.value)
+      .pipe(tap( (response: {success: number, data: any}) => {
+       if (response.data){
+         this.billInfoData = response.data;
+         this.billdataSub.next([...this.billInfoData]);
+       }
    }));
   }
 
@@ -82,6 +86,9 @@ export class FeesService {
   generateBill(billData){
     return this.http.post(GlobalVariable.API_URL + 'saveBill', {billInfo: billData});
   }
+  getBillInfoData(){
+    return [...this.billInfoData];
+}
 
   private _serverError(err: any) {
     if (err instanceof Response) {

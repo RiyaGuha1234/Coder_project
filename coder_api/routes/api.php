@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get('getStudentToCourse/{id}',[StudentToCourseController::class,'get']);
     Route::get('getCourseByStudent/{id}',[StudentToCourseController::class,'getCourseByStudent']);
     Route::post('dueFees',[FeesController::class,'getDueFees']);
-    Route::get('getBillInfo/{id}',[FeesController::class,'getBillInfo']);
+    Route::post('getBillInfo',[FeesController::class,'getBillInfo']);
     Route::post('setDiscount',[StudentToCourseController::class,'setDiscount']);
     Route::post('getCourseByStudent',[StudentController::class,'getCourseByStudent']);
     Route::post('editCourseInfo',[StudentToCourseController::class,'editCourseInfo']);
@@ -48,9 +48,14 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('save',[CourseController::class,'save']);
     Route::put('update',[CourseController::class,'update']);
     Route::delete('deleteCourse/{id}',[CourseController::class,'delete']);
+    Route::get('getBilledStudents',[BillMasterController::class,'getBilledStudents']);
+    Route::get('getBillDetails/{id}',[BillMasterController::class,'getBillDetails']);
+    Route::get('getBill/{id}',[BillMasterController::class,'getBill']);
+
 });
 Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class,'login']);
+
 //Route::get('getStudents',[StudentController::class,'getStudents']);
 //Route::post('saveStudent',[StudentController::class,'saveStudent']);
 

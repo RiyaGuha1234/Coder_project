@@ -1,0 +1,40 @@
+<div style="text-align: center">
+  <div fxFlex="50" >
+    <mat-card style="background-color: transparent">
+        <table class="table table-hover">
+          <thead>
+            <th>SL No.</th>
+            <th>Student Name</th>
+            <th>View Bill Details</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let indexOfElement = index ;let item of billedStudentList">
+              <td>{{indexOfElement+1}}</td>
+              <td>{{item.student_name}}</td>
+              <td><button (click)="viewBillDetails(item.student_id)">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+    </mat-card>
+  </div>
+  <div fxflex="50" [hidden]="!viewDetails">
+    <mat-card style="background-color: transparent">
+      <table class="table table-hover">
+        <thead>
+        <th>SL No.</th>
+        <th>Billing Date</th>
+        <th>Bill Number</th>
+        <th>View Bill</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let indexOfElement = index ;let item of billDetailsList">
+          <td>{{indexOfElement+1}}</td>
+          <td>{{item.bill_date}}</td>
+          <td>{{item.bill_number}}</td>
+          <td><button (click)="viewBill(item.id)">View</button></td>
+        </tr>
+        </tbody>
+      </table>
+    </mat-card>
+  </div>
+</div>

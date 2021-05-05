@@ -4,7 +4,7 @@
       <div fxLayout="row">
 
           <div class="logo-image">
-            <img src="../../../assets/background/logo.jpeg" class="img-fluid">
+            <img src="assets/background/logo.jpeg" class="img-fluid">
           </div>
 
         <button mat-button >
@@ -36,7 +36,7 @@
     <mat-toolbar-row fxLayoutAlign="space-between center">
       <div fxLayout="row">
         <div class="logo-image">
-          <img src="../../../assets/background/logo.jpeg" class="img-fluid">
+          <img src="assets/background/logo.jpeg" class="img-fluid">
         </div>
         <button mat-button >
 
@@ -67,7 +67,7 @@
 
         <mat-menu #fees="matMenu">
           <button mat-menu-item [routerLink]="['/fees']">Student Fees Entry</button>
-<!--          <button mat-menu-item [routerLink]="['/feesDue']">View Due Fees</button>-->
+          <button mat-menu-item [routerLink]="['/bills']">Bill List</button>
         </mat-menu>
 
         <button mat-button (click)="logOut()">Logout</button>

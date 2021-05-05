@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FeesService} from '../../services/fees.service';
 import {ToWords} from 'to-words/dist/to-words';
+import {BillService} from '../../services/bill.service';
 
 @Component({
   selector: 'app-bill',
@@ -16,7 +17,7 @@ export class BillComponent implements OnInit {
   showBill = false;
   toWords = new ToWords();
 
-  constructor(private  route: ActivatedRoute, private  feesService: FeesService) {}
+  constructor(private  route: ActivatedRoute, private  feesService: FeesService, private billService: BillService) {}
 
 
   printDivStyle = {
@@ -40,6 +41,7 @@ export class BillComponent implements OnInit {
           if (billResponse.data){
             this.showBill = true;
             this.savedBillIfo  = billResponse.data;
+            this.billService.getUpdatedBilledStudentData();
             console.log(billResponse.data);
           }
 

@@ -17,7 +17,7 @@
       <p style="text-align: center ; font-weight: bolder">CODER</p>
       <hr>
       <div  *ngIf="savedBillIfo" style="text-align: center ; font-weight: bolder ; font-size: medium ">BILL NUMBER : {{savedBillIfo.bill_number | uppercase}}</div>
-      <div class="d-flex"  style="width: 100%">
+      <div *ngIf="billInfo" class="d-flex"  style="width: 100%">
         <div class="col-5" style="text-align: left ; font-weight: bolder ; font-size: medium">{{billInfo[0].student_name | uppercase}}</div>
         <div class="col-2"></div>
         <div class="col-5" style="text-align: right ;font-weight: bolder ; font-size: medium">BILL DATE : {{billInfo[0].date | date: 'dd-MM-YYYY'}}</div>

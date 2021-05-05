@@ -104,12 +104,12 @@
           <tr *ngIf="dueByStudent" style="background-color: darkseagreen">
             <!--          <td>Course Status:  </td>-->
             <!--          <td>{{dueByStudent[0].inforce === 1? 'Active' : 'Inactive'}}</td>-->
-            <td>Total Fees:  </td>
-            <td>₹ {{dueByStudent[0].totalDue}}</td>
-            <td>Total Paid: </td>
-            <td>₹  {{dueByStudent[0].paid}}</td>
-            <td>Discount: </td>
-            <td>₹  {{dueByStudent[0].discount}}</td>
+<!--            <td>  </td>-->
+            <td>Total Fees:₹ {{dueByStudent[0].totalDue}}</td>
+<!--            <td> </td>-->
+            <td>Total Paid: ₹  {{dueByStudent[0].paid}}</td>
+<!--            <td></td>-->
+            <td>Discount: ₹  {{dueByStudent[0].discount}}</td>
             <td>Total Due: ₹ {{dueByStudent[0].due}}</td>
           </tr>
           </tbody>
@@ -194,7 +194,7 @@
 <!--            <button mat-raised-button (click)="submitFeesByStudent()" [disabled]="feesEntryForm.invalid">Save</button>-->
 <!--            <button mat-raised-button (click)="submitFeesByStudent()">Save</button>-->
             <button mat-raised-button (click)="clearForm()" [disabled]="feesEntryForm.pristine">Clear</button>
-            <button mat-raised-button  (click)="openDialog()" [disabled]="!isPrintReceiptEnabled">Print Receipt</button>
+            <button mat-raised-button  (click)="openDialog()" [disabled]="!isPrintReceiptEnabled">Generate Bill</button>
 
 <!--            <button mat-raised-button (click)="openDialog()">Print </button>-->
 
