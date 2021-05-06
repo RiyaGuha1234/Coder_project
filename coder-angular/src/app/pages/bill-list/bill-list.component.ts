@@ -15,11 +15,14 @@ export class BillListComponent implements OnInit {
   billDetailsList: any[];
   viewDetails = false;
   viewBillData: any;
+  searchDate: string;
+  pageSize = 5;
   constructor(private billService: BillService , public  dialog: MatDialog) {
     this.billedStudentList =  this.billService.getBilledStudentData();
   }
 
   ngOnInit(): void {
+    this.pageSize = 5;
     this.viewDetails = false;
     this.billService.getBilledStudentUpdateListener().subscribe((response) => {
       this.billedStudentList = response;

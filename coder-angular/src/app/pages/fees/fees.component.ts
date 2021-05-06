@@ -31,6 +31,7 @@ export class FeesComponent implements OnInit {
   maxDate = new Date(2023, 3, 2);
   currentDate = new Date();
   feesDate =  formatDate(this.currentDate , 'dd/MM/yyyy', 'en');
+  // feesDate =  formatDate('5/13/2021' , 'dd/MM/yyyy', 'en');
   courseListByStudent: any[] = [];
   showDue = false;
   dueByStudent: any;

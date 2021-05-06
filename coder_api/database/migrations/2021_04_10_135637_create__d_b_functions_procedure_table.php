@@ -65,7 +65,7 @@ class CreateDBFunctionsProcedureTable extends Migration
                                         select inforce into temp_inforce from student_to_courses where student_id = param_student_id AND course_id = param_course_id;
 
 
-                                        select if(ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date))) into temp_total_month;
+                                        select if(ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(CURRENT_DATE())-MONTH(temp_effective_date))) into temp_total_month_active;
                                         select if(ABS(MONTH(temp_closing_date)-MONTH(temp_effective_date)) <1 , 1 ,ABS(MONTH(temp_closing_date)-MONTH(temp_effective_date))) into temp_total_month_inactive;
 
                                         select if(temp_inforce = 0,temp_total_month_inactive,temp_total_month_active) into temp_total_month;

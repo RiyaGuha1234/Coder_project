@@ -1,35 +1,45 @@
 <div style="text-align: center">
-  <div fxFlex="50" >
-    <mat-card style="background-color: transparent">
-        <table class="table table-hover">
-          <thead>
+  <div fxFlex="60" >
+    <div style="background-color: transparent ;  margin: 20px; text-align: center">
+        <table class="table table-hover table-bordered">
+          <thead class="thead-dark">
             <th>SL No.</th>
             <th>Student Name</th>
             <th>View Bill Details</th>
           </thead>
           <tbody>
-            <tr *ngFor="let indexOfElement = index ;let item of billedStudentList">
+            <tr *ngFor="let indexOfElement = index ;let item of billedStudentList" style="color: darkblue; font-size: small">
               <td>{{indexOfElement+1}}</td>
               <td>{{item.student_name}}</td>
               <td><button (click)="viewBillDetails(item.student_id)">View</button></td>
             </tr>
           </tbody>
         </table>
-    </mat-card>
+    </div>
   </div>
-  <div fxflex="50" [hidden]="!viewDetails">
-    <mat-card style="background-color: transparent">
+  <div fxflex="40" [hidden]="!viewDetails">
+    <mat-card style="background-color: lightgray; margin: 20px">
+      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style="; margin: 10px">
+        <div class="input-group rounded"  style = "width: 40%">
+          <input type="search" class="form-control rounded" placeholder="Search Date" aria-label="Search"
+                 [(ngModel)]="searchDate"  aria-describedby="search-addon"  style="font-size: small"/>
+        </div>
+        <div class="input-group rounded"  style = "width: 40%">
+          <input type="search" class="form-control rounded" placeholder="Items per page" aria-label="Search"
+                 [(ngModel)]="pageSize"  aria-describedby="search-addon"  style="font-size: small"/>
+        </div>
+      </div>
       <table class="table table-hover">
-        <thead>
+        <thead class="thead-light">
         <th>SL No.</th>
         <th>Billing Date</th>
         <th>Bill Number</th>
         <th>View Bill</th>
         </thead>
         <tbody>
-        <tr *ngFor="let indexOfElement = index ;let item of billDetailsList">
+        <tr *ngFor="let indexOfElement = index ;let item of billDetailsList | filter: searchDate" style="color: midnightblue; font-size: small ;  font-weight: normal">
           <td>{{indexOfElement+1}}</td>
-          <td>{{item.bill_date}}</td>
+          <td>{{item.bill_date | date: 'dd/MM/yyyy'}}</td>
           <td>{{item.bill_number}}</td>
           <td><button (click)="viewBill(item.id)">View</button></td>
         </tr>
