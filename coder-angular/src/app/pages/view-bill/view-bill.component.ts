@@ -13,6 +13,15 @@ export class ViewBillComponent implements OnInit {
   showBill =  false;
   totalAmountPaid = 0;
   toWords = new ToWords();
+
+  printDivStyle = {
+    printBillDiv: {marginRight : '3px', marginLeft : '3px', marginTop : '5px'},
+    table: {width : '100%', border: '1px dashed', textAlign: 'center'},
+    // label: {width: '100%'},
+    tr: {border: '1px dashed', padding: '5 px'},
+    thead: {'border-style': '1px dashed'}
+  };
+
   constructor(private billService: BillService) {}
 
   ngOnInit(): void {

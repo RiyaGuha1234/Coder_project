@@ -5,10 +5,10 @@
 <!--  </div>-->
   <div *ngIf="viewBillData" style="height: 300vh; background-color:whitesmoke" [hidden]="!showBill">
     <div style="text-align: right; height: 1px"  >
-<!--      <button mat-button   [printStyle]="printDivStyle"-->
-<!--              printSectionId="printBillDiv"-->
-<!--              ngxPrint><mat-icon>print</mat-icon>-->
-<!--      </button>-->
+      <button mat-button   [printStyle]="printDivStyle"
+              printSectionId="printBillDiv"
+              ngxPrint><mat-icon>print</mat-icon>
+      </button>
       <button  mat-button ><mat-icon>cloud_download</mat-icon></button>
       <button  mat-button class="btn btn-danger rounded-pill" [mat-dialog-close]="true" ><mat-icon>close</mat-icon></button>
 
