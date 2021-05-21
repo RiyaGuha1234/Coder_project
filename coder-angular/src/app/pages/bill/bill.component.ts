@@ -3,6 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {FeesService} from '../../services/fees.service';
 import {ToWords} from 'to-words/dist/to-words';
 import {BillService} from '../../services/bill.service';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-bill',
@@ -60,6 +63,30 @@ export class BillComponent implements OnInit {
   close(){
     alert();
   }
+  downloadBill(){ const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('My PDF Table', 20, 8);
+    doc.setFontSize(11);
+    doc.setTextColor(100);
+
+    const headers = ['user_name', 'email', 'mobile1'];
+    // you can use this following code instead of alasql, customerData has morefield but you can select some of them
+    const selectedCustomer = this.customerData.map(({ user_name, email, mobile1 }) => ({ user_name, email, mobile1 }));
+
+    (doc as any).autoTable({
+      //  head: headers,
+      body: selectedCustomer,
+      theme: 'grid',
+      didDrawCell: data => {
+      }
+    });
+
+    // Open PDF document in new tab
+    doc.output('dataurlnewwindow');
+
+    // Download PDF document
+    doc.save('table.pdf');
 
 
 }

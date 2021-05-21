@@ -36,7 +36,7 @@ export class CourseComponent implements OnInit {
   saveCourse(){
     this.courseService.saveCourse().subscribe((response: {success: number , data: Course}) => {
         if (response.data){
-          this.courseData.unshift(response.data);
+          // this.courseData.unshift(response.data);
           this.courseForm.reset();
           Swal.fire('Success', 'Course Added', 'success');
         }
@@ -66,15 +66,24 @@ export class CourseComponent implements OnInit {
     this.courseForm.reset();
   }
   deleteCourse(data){
-    this.courseService.delete(data).subscribe((response) => {
-      if (response.data){
-        Swal.fire('Success', 'Course Deleted', 'success');
-        const index = this.courseData.findIndex(x => x.id === data);
-        this.courseData.splice(index, 1);
-      }
-    }, (error) => {
-      if (error.status === 500){
-        Swal.fire('Active Course' , 'Course cannot be deleted', 'error');
+    Swal.fire({
+      title: 'Are you sure to delete the course?',
+      text: 'Please confirm to add',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm ?',
+      cancelButtonText: 'Decline'
+    }).then((result) => {
+      if(result.value){
+        this.courseService.delete(data).subscribe((response) => {
+          if (response.data){
+            Swal.fire('Success', 'Course Deleted', 'success');
+          }
+        }, (error) => {
+          if (error.status === 500){
+            Swal.fire('Active Course' , 'Course cannot be deleted', 'error');
+          }
+        });
       }
     });
   }

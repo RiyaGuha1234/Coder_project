@@ -3,6 +3,8 @@ import {BillService} from '../../services/bill.service';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {BillComponent} from "../bill/bill.component";
 import {ViewBillComponent} from '../view-bill/view-bill.component';
+import {formatDate} from "@angular/common";
+
 
 @Component({
   selector: 'app-bill-list',
@@ -15,9 +17,11 @@ export class BillListComponent implements OnInit {
   billDetailsList: any[];
   viewDetails = false;
   viewBillData: any;
-  searchDate: string;
+  searchDate: any;
   billPageSize = 5;
   billPage = 1;
+
+
   constructor(private billService: BillService , public  dialog: MatDialog) {
     this.billedStudentList =  this.billService.getBilledStudentData();
   }
@@ -28,7 +32,6 @@ export class BillListComponent implements OnInit {
     this.viewDetails = false;
     this.billService.getBilledStudentUpdateListener().subscribe((response) => {
       this.billedStudentList = response;
-      console.log( this.billedStudentList);
     });
   }
   viewBillDetails(data){
@@ -36,6 +39,11 @@ export class BillListComponent implements OnInit {
       if(response.data){
         this.viewDetails  = true;
         this.billDetailsList = response.data;
+        if(this.billDetailsList){
+          for(let i = 0; i < this.billDetailsList.length ; i++){
+            this.billDetailsList[i].bill_date = formatDate(this.billDetailsList[i].bill_date , 'dd-MM-yyyy', 'en');
+          }
+        }
       }
     });
   }

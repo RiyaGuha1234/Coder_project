@@ -83,7 +83,7 @@ class BillMasterController extends Controller
     public function getBilledStudents(){
         $data =  BillMaster::select('students.student_name','bill_masters.student_id')
                  ->join('students','students.id','=','bill_masters.student_id')
-                 ->groupBy('bill_masters.student_id')
+                 ->groupBy('bill_masters.student_id','students.student_name')
                  ->get();
 
         return  response()->json(['success'=>100,'data'=>$data],200,[],JSON_NUMERIC_CHECK);

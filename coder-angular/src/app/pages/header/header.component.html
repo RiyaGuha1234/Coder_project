@@ -49,28 +49,30 @@
                   [routerLinkActiveOptions]="{exact: true}"><mat-icon>home</mat-icon>Home</button>
           <button mat-button >Contact Us</button>
           <button mat-button >About Us</button>
+          <button mat-button [routerLink]="['/course']">Courses</button>
+          <button mat-button [routerLink]="['/student']">Student</button>
+          <button mat-button [matMenuTriggerFor]="fees">Fees<mat-icon>keyboard_arrow_down</mat-icon></button>
+          <button mat-button (click)="logOut()">Logout</button>
         </div>
         <!--for huge menus-->
-        <button mat-button [matMenuTriggerFor]="courses">Courses<mat-icon>keyboard_arrow_down</mat-icon></button>
-        <button mat-button [matMenuTriggerFor]="student">Student<mat-icon>keyboard_arrow_down</mat-icon></button>
-        <button mat-button [matMenuTriggerFor]="fees">Fees<mat-icon>keyboard_arrow_down</mat-icon></button>
 
-        <mat-menu #courses="matMenu">
-          <button mat-menu-item [routerLink]="['/course']">Add Course</button>
-          <!--          <button mat-menu-item [routerLink]="['/studentToCourse']">Add Course</button>-->
-        </mat-menu>
 
-        <mat-menu #student="matMenu">
-          <button mat-menu-item [routerLink]="['/student']">Add Student</button>
-<!--          <button mat-menu-item [routerLink]="['/studentToCourse']">Add Course</button>-->
-        </mat-menu>
+<!--        <mat-menu #courses="matMenu">-->
+<!--          <button mat-menu-item [routerLink]="['/course']">Add Course</button>-->
+<!--          &lt;!&ndash;          <button mat-menu-item [routerLink]="['/studentToCourse']">Add Course</button>&ndash;&gt;-->
+<!--        </mat-menu>-->
+
+<!--        <mat-menu #student="matMenu">-->
+<!--          <button mat-menu-item [routerLink]="['/student']">Add Student</button>-->
+<!--&lt;!&ndash;          <button mat-menu-item [routerLink]="['/studentToCourse']">Add Course</button>&ndash;&gt;-->
+<!--        </mat-menu>-->
 
         <mat-menu #fees="matMenu">
           <button mat-menu-item [routerLink]="['/fees']">Student Fees Entry</button>
           <button mat-menu-item [routerLink]="['/bills']">Bill List</button>
         </mat-menu>
 
-        <button mat-button (click)="logOut()">Logout</button>
+
       </div>
     </mat-toolbar-row>
 

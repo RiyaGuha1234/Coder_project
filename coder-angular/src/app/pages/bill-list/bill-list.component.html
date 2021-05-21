@@ -1,6 +1,8 @@
 <div style="text-align: center">
-  <div fxFlex="60" >
+  <h3 *ngIf="billedStudentList.length === 0" style="color: red">No Bill Generated !!!</h3>
+  <div  *ngIf="billedStudentList.length >0" fxFlex="60" >
     <div style="background-color: transparent ;  margin: 20px; text-align: center">
+
         <table class="table table-hover table-bordered">
           <thead class="thead-dark">
             <th>SL No.</th>
@@ -18,7 +20,7 @@
     </div>
   </div>
   <div fxflex="40" [hidden]="!viewDetails">
-    <mat-card style="background-color: lightgray; margin: 20px">
+    <mat-card style="background-color: lightgray;">
       <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style="; margin: 10px">
         <div class="input-group rounded"  style = "width: 40%">
           <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"

@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         User::create(['user_name'=>'sukantahui','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
 
-        \App\Models\Student::factory(40)->create();
+        \App\Models\Student::factory(30)->create();
 
 //        StudentToCourse::create(['student_id'=>1,'course_id'=>2]);
 //        StudentToCourse::create(['student_id'=>2,'course_id'=>2]);

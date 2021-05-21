@@ -1,7 +1,7 @@
 <div  style="background-color: transparent ; align-content: center ; text-align: center">
   <div [hidden]="showBill" id="waitingDiv" style="text-align: center ; background-color: transparent">
 <!--    <h1>Loading....</h1>-->
-    <img src="../../../assets/background/searching2.gif" alt="Loading....">
+    <img src="assets/background/searching2.gif" alt="Loading....">
   </div>
   <div *ngIf="billInfo" style="height: 300vh; background-color:whitesmoke" [hidden]="!showBill">
     <div style="text-align: right; height: 1px"  >
@@ -9,7 +9,7 @@
               printSectionId="printBillDiv"
               ngxPrint><mat-icon>print</mat-icon>
       </button>
-      <button  mat-button ><mat-icon>cloud_download</mat-icon></button>
+      <button  mat-button (click)="downloadBill()" ><mat-icon>cloud_download</mat-icon></button>
       <button  mat-button class="btn btn-danger rounded-pill" [mat-dialog-close]="true" cdkFocusInitial><mat-icon>close</mat-icon></button>
 
     </div>

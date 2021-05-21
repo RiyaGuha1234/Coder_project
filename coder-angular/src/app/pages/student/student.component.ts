@@ -99,6 +99,7 @@ export class StudentComponent implements OnInit {
   clearForm(){
     this.studentForm.reset();
     this.studentForm.patchValue({contact: '+91', date: this.date , effective_date: this.currentDate});
+    this.showAddedCourse = false;
     console.log(this.studentForm.value);
 
   }

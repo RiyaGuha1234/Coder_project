@@ -60,7 +60,7 @@ class FeesController extends Controller
             ->join('course_types','course_types.id','=','courses.course_type_id')
             ->where('student_to_courses.student_id', '=', $request->studentId)
             ->where('student_to_courses.course_id', '=', $request->courseId)
-            ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type')
+            ->groupBy('student_to_courses.course_id','courses.course_name','student_to_courses.fees_for_student','student_to_courses.student_id','course_types.type','student_to_courses.discount','student_to_courses.inforce','student_to_courses.effective_date','student_to_courses.closing_date')
             ->get();
 
         return response()->json(['success'=>1,'data1'=>$data1,'data2'=>$data2],200,[],JSON_NUMERIC_CHECK);

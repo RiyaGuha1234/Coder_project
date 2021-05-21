@@ -1,25 +1,26 @@
 <div style="padding: 20px">
   <div fxFlex="40">
     <mat-card  style="background-color: powderblue ; margin: 20px">
+      <h3 style="text-align: center"><u>Course Profile</u></h3>
       <form [formGroup]= courseForm >
         <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
           <div style="padding: 3px">
-            <mat-form-field class="col-8">
+            <mat-form-field class="col-12">
               <input matInput placeholder="Course Name" formControlName="course_name">
             </mat-form-field>
           </div>
           <div style="padding: 3px">
-            <div fxFlex="50">
-              <mat-form-field>
+<!--            <div fxFlex="50">-->
+              <mat-form-field class="col-7">
                 <input matInput placeholder="Course Fees" formControlName="course_fees">
               </mat-form-field>
             </div>
-            <div fxFlex="50">
-              <ng-select bindLabel="Type" formControlName="course_type_id">
-                    <ng-option *ngFor="let item of courseTypeList" [value]="item.id">{{item.type}}</ng-option>
-                {{courseForm.value.type}}
-              </ng-select>
-            </div>
+<!--            <div fxFlex="50">-->
+          <div style="padding: 3px">
+               <ng-select class="col-10" bindLabel="Type" formControlName="course_type_id" placeholder="Select Course Type">
+                  <ng-option *ngFor="let item of courseTypeList" [value]="item.id">{{item.type}}</ng-option>
+                  {{courseForm.value.type}}
+                </ng-select>
           </div>
         </div>
       </form>

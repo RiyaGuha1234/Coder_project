@@ -43,7 +43,7 @@ export class CourseService {
     return this.http.post(GlobalVariable.API_URL + 'save', this.courseForm.value)
       .pipe(catchError(this._serverError), tap((response: {success: number ,  data: Course}) => {
        if (response.data){
-         this.courseList.push(response.data);
+         this.courseList.unshift(response.data);
          this.courseListSub.next([...this.courseList]);
        }
     }));

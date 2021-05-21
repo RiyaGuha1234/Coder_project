@@ -49,7 +49,7 @@ class CourseController extends Controller
 
     public function delete($id)
     {
-        $course = Course::destroy($id);
+        $course = Course::where('id',$id)->delete();
 
         return response()->json(['success'=>100,'data'=>$course],200,[],JSON_NUMERIC_CHECK);
     }

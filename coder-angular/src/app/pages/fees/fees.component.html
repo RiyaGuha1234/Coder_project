@@ -1,5 +1,5 @@
 <div>
-  <div fxFlex="48">
+  <div fxFlex="40">
     <mat-card style="background-color: lightgrey; margin: 10px ; font-family: 'Arial'" [hidden]="showDue">
       <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style =" margin-bottom: 25px">
 <!--        <mat-form-field class="example-full-width">-->
@@ -138,7 +138,7 @@
       </div>
     </mat-card>
   </div>
-  <div fxFlex="50">
+  <div fxFlex="60">
     <mat-card  style="background-color:#b3d9ff ; margin: 30px; width: 95%">
       <div [formGroup]="feesEntryForm">
          <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
@@ -158,22 +158,22 @@
                 <th colspan="2">Course</th>
                 <th>Status</th>
                 <th>Fees (₹)</th>
-                <th colspan="2">Action</th>
+                <th colspan="4">Action</th>
               </thead>
               <tbody>
                 <tr *ngFor="let item of courseListByStudent ; let indexOfElement = index">
                   <td colspan="2">{{indexOfElement+1}}</td>
                   <td colspan="2">{{item.course_name}}</td>
                   <td [ngClass]="item.inforce === 1 ? 'active' : 'inactive'">{{item.inforce === 1? 'Active' : 'Inactive'}}</td>
-                  <td>
+                  <td style="width: 20%">
                     <mat-form-field style="width: 60%">
                       <input matInput placeholder="Submit Fees" formControlName="fees" [readonly]="item.inforce === 0">
                     </mat-form-field>
                   </td>
-                  <td>
+                  <td colspan="1">
                     <button type="button" class="btn btn-outline-info" (click)="submitFeesByStudent(item)" [disabled]="item.inforce === 0">Submit</button>
                   </td>
-                  <td colspan="2">
+                  <td colspan="3">
                     <button type="button" class="btn btn-outline-info" (click)="viewDue(item)">View Due</button>
 <!--                    <button mat-button style="background-color: aqua" [routerLink]="['/feesDue',item.student_id,item.course_id]">View Due</button>-->
                   </td>
