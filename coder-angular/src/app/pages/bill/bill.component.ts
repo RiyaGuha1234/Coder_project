@@ -5,6 +5,8 @@ import {ToWords} from 'to-words/dist/to-words';
 import {BillService} from '../../services/bill.service';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+
 
 
 @Component({
@@ -19,6 +21,7 @@ export class BillComponent implements OnInit {
   totalAmountPaid: number;
   showBill = false;
   toWords = new ToWords();
+
 
   constructor(private  route: ActivatedRoute, private  feesService: FeesService, private billService: BillService) {}
 
@@ -63,30 +66,20 @@ export class BillComponent implements OnInit {
   close(){
     alert();
   }
-  downloadBill(){ const doc = new jsPDF();
+  downloadBill(){
+    const data = document.getElementById('printBillDiv');
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 208;
+      const pageHeight = 300;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
 
-    doc.setFontSize(18);
-    doc.text('My PDF Table', 20, 8);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-
-    const headers = ['user_name', 'email', 'mobile1'];
-    // you can use this following code instead of alasql, customerData has morefield but you can select some of them
-    const selectedCustomer = this.customerData.map(({ user_name, email, mobile1 }) => ({ user_name, email, mobile1 }));
-
-    (doc as any).autoTable({
-      //  head: headers,
-      body: selectedCustomer,
-      theme: 'grid',
-      didDrawCell: data => {
-      }
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('bill.pdf'); // Generated PDF
     });
-
-    // Open PDF document in new tab
-    doc.output('dataurlnewwindow');
-
-    // Download PDF document
-    doc.save('table.pdf');
-
-
+  }
 }

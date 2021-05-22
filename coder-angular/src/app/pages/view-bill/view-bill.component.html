@@ -9,11 +9,11 @@
               printSectionId="printBillDiv"
               ngxPrint><mat-icon>print</mat-icon>
       </button>
-      <button  mat-button ><mat-icon>cloud_download</mat-icon></button>
+      <button  mat-button (click)="downloadBill()" ><mat-icon>cloud_download</mat-icon></button>
       <button  mat-button class="btn btn-danger rounded-pill" [mat-dialog-close]="true" ><mat-icon>close</mat-icon></button>
 
     </div>
-    <div id ="printBillDiv"  style="height: 200px;">
+    <div id ="printBillDiv" style="height: 200px;">
       <p style="text-align: center ; font-weight: bolder">CODER</p>
       <hr>
       <div  *ngIf="viewBillData" style="text-align: center ; font-weight: bolder ; font-size: medium ">BILL NUMBER : {{viewBillData[0].bill_number | uppercase}}</div>
@@ -53,9 +53,6 @@
         <div style="text-align: center ; margin-bottom: 2px">
           <p>Thank you from CODER</p>
         </div>
-        <!--        <div mat-dialog-actions style="height: 2px" [hidden]="!showBill">-->
-        <!--          <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>-->
-        <!--        </div>-->
       </div>
     </div>
   </div>

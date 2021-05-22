@@ -38,10 +38,20 @@ export class CourseComponent implements OnInit {
         if (response.data){
           // this.courseData.unshift(response.data);
           this.courseForm.reset();
-          Swal.fire('Success', 'Course Added', 'success');
+          Swal.fire({
+            title: 'Success',
+            text: 'Course has been added successfully',
+            icon: 'success',
+            timer: 1500
+          });
         }
     }, (error) => {
-      Swal.fire(error.message, 'Course not saved', 'error');
+      Swal.fire({
+        title: error.message,
+        text: 'Course is not saved',
+        icon: 'error',
+        timer: 1500
+      });
     });
   }
 
@@ -52,14 +62,24 @@ export class CourseComponent implements OnInit {
   updateCourse(){
     this.courseService.update().subscribe((response: {success: number , data: Course}) => {
       if (response.data){
-        Swal.fire('Updated', 'Course Data Uodated', 'success');
+        Swal.fire({
+          title: 'Updated',
+          text: 'Course is updated',
+          icon: 'success',
+          timer: 1500
+        });
         const index = this.courseData.findIndex(x => x.id === this.courseForm.value.id);
         if (index !== -1){
           this.courseData.splice(index, 1, response.data);
         }
       }
     }, (error) => {
-      Swal.fire(error.message, 'Course not Saved', 'error');
+      Swal.fire({
+          title: error.message,
+          text: 'Course is not updated ',
+          icon: 'error',
+          timer: 1500
+        });
     });
   }
   clearForm(){
@@ -77,11 +97,22 @@ export class CourseComponent implements OnInit {
       if(result.value){
         this.courseService.delete(data).subscribe((response) => {
           if (response.data){
-            Swal.fire('Success', 'Course Deleted', 'success');
+            // Swal.fire('Success', 'Course Deleted', 'success' );
+            Swal.fire({
+              title: 'Success',
+              text: 'Course has been deleted successfully ',
+              icon: 'success',
+              timer: 1500
+            });
           }
         }, (error) => {
           if (error.status === 500){
-            Swal.fire('Active Course' , 'Course cannot be deleted', 'error');
+            Swal.fire({
+              title: 'Active Course',
+              text: 'Course can not be deleted ',
+              icon: 'error',
+              timer: 1500
+            });
           }
         });
       }
