@@ -1,69 +1,74 @@
-<div style="text-align: center">
-  <h3 *ngIf="billedStudentList.length === 0" style="color: red">No Bill Generated !!!</h3>
-  <div  *ngIf="billedStudentList.length >0" fxFlex="60" >
-    <div style="background-color: transparent ;  margin: 20px; text-align: center">
+<div>
+  <div *ngIf="billedStudentList.length === 0" style="color: red ; text-align: center ; width: 100%">
+    <h3>No Bill Generated !!!</h3>
+  </div>
+  <div>
+    <div  *ngIf="billedStudentList.length >0" fxFlex="45" >
+      <div style="background-color: transparent ;  margin: 20px; text-align: center">
 
-        <table class="table table-hover table-bordered">
+        <table class="table table-bordered">
           <thead class="thead-dark">
-            <th>SL No.</th>
-            <th>Student Name</th>
-            <th>View Bill Details</th>
+          <th>SL No.</th>
+          <th>Student Name</th>
+          <th>View Bill Details</th>
           </thead>
           <tbody>
-            <tr *ngFor="let indexOfElement = index ;let item of billedStudentList" style="color: darkblue; font-size: small">
-              <td>{{indexOfElement+1}}</td>
-              <td>{{item.student_name}}</td>
-              <td><button  mat-basic-chip (click)="viewBillDetails(item.student_id)">View</button></td>
-            </tr>
+          <tr *ngFor="let indexOfElement = index ;let item of billedStudentList" style="color: darkblue; font-size: small">
+            <td>{{indexOfElement+1}}</td>
+            <td>{{item.student_name}}</td>
+            <td><button  mat-basic-chip (click)="viewBillDetails(item.student_id)">View</button></td>
+          </tr>
           </tbody>
         </table>
+      </div>
     </div>
-  </div>
-  <div fxflex="40" [hidden]="!viewDetails">
-    <mat-card style="background-color: lightgray;">
-      <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style="; margin: 10px">
-        <div class="input-group rounded"  style = "width: 40%">
-          <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                 [(ngModel)]="searchDate"  aria-describedby="search-addon"  style="font-size: small"/>
+    <div fxFlex="5"></div>
+    <div fxflex="50"  style="align-items: center" [hidden]="!viewDetails">
+      <mat-card  style="background-color: lightgray; width: 100%">
+        <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="30px" fxLayoutGap.xs="0" style="; margin: 10px">
+          <div class="input-group rounded"  style = "width: 40%">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                   [(ngModel)]="searchDate"  aria-describedby="search-addon"  style="font-size: small"/>
+          </div>
+          <div class="input-group rounded"  style = "width: 40%">
+            <input type="search" class="form-control rounded" placeholder="Items per page" aria-label="Search"
+                   [(ngModel)]="billPageSize"  aria-describedby="search-addon"  style="font-size: small"/>
+          </div>
         </div>
-        <div class="input-group rounded"  style = "width: 40%">
-          <input type="search" class="form-control rounded" placeholder="Items per page" aria-label="Search"
-                 [(ngModel)]="billPageSize"  aria-describedby="search-addon"  style="font-size: small"/>
+        <table class="table table-hover">
+          <thead class="thead-light">
+          <th>SL No.</th>
+          <th colspan="2">Billing Date</th>
+          <th colspan="3">Bill Number</th>
+          <th colspan="2">View Bill</th>
+          </thead>
+          <tbody>
+          <tr  style="color: midnightblue; font-size: small ;  font-weight: normal " *ngFor="let indexOfElement = index ;let item of billDetailsList | filter: searchDate |  paginate: { itemsPerPage: billPageSize, currentPage: billPage }">
+            <td>{{indexOfElement+1}}</td>
+            <td  colspan="2">{{item.bill_date}}</td>
+            <td  colspan="3">{{item.bill_number}}</td>
+            <td  colspan="2"><button (click)="viewBill(item.id)">View</button></td>
+          </tr>
+          </tbody>
+        </table>
+        <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
+          <!--    https://www.npmjs.com/package/ngx-pagination-->
+          <!--    npm i ngx-pagination-->
+          <pagination-controls (pageChange)="billPage = $event"></pagination-controls>
+          <pagination-controls  id="some_id"
+                                (pageChange)="billPage=($event)"
+                                maxSize="5"
+                                directionLinks="true"
+                                autoHide="true"
+                                responsive="true"
+                                previousLabel="Previous"
+                                nextLabel="Next"
+                                screenReaderPaginationLabel="Pagination"
+                                screenReaderPageLabel="page"
+                                screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
         </div>
-      </div>
-      <table class="table table-hover">
-        <thead class="thead-light">
-        <th>SL No.</th>
-        <th>Billing Date</th>
-        <th>Bill Number</th>
-        <th>View Bill</th>
-        </thead>
-        <tbody>
-        <tr  style="color: midnightblue; font-size: small ;  font-weight: normal " *ngFor="let indexOfElement = index ;let item of billDetailsList | filter: searchDate |  paginate: { itemsPerPage: billPageSize, currentPage: billPage }">
-          <td>{{indexOfElement+1}}</td>
-          <td>{{item.bill_date}}</td>
-          <td>{{item.bill_number}}</td>
-          <td><button (click)="viewBill(item.id)">View</button></td>
-        </tr>
-        </tbody>
-      </table>
-      <div fxLayout.xs="column" fxLayout="column" fxFlexFill>
-        <!--    https://www.npmjs.com/package/ngx-pagination-->
-        <!--    npm i ngx-pagination-->
-        <pagination-controls (pageChange)="billPage = $event"></pagination-controls>
-        <pagination-controls  id="some_id"
-                              (pageChange)="billPage=($event)"
-                              maxSize="5"
-                              directionLinks="true"
-                              autoHide="true"
-                              responsive="true"
-                              previousLabel="Previous"
-                              nextLabel="Next"
-                              screenReaderPaginationLabel="Pagination"
-                              screenReaderPageLabel="page"
-                              screenReaderCurrentLabel="You're on page">
-        </pagination-controls>
-      </div>
-    </mat-card>
+      </mat-card>
+    </div>
   </div>
 </div>

@@ -48,8 +48,8 @@ export class FeesService {
   }
 
   submitFees(data){
-    // this.feesEntryForm.value.date = formatDate(this.currentDate, 'yyyy-MM-dd', 'en');
-    this.feesEntryForm.value.date = formatDate('5/13/2021', 'yyyy-MM-dd', 'en');
+    this.feesEntryForm.value.date = formatDate(this.currentDate, 'yyyy-MM-dd', 'en');
+    // this.feesEntryForm.value.date = formatDate('5/13/2021', 'yyyy-MM-dd', 'en');
     console.log(this.feesEntryForm.value);
     // return this.http.post('http://127.0.0.1:8000/api/saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
     return this.http.post(GlobalVariable.API_URL + 'saveFees', {courseInfo: data , formInfo: this.feesEntryForm.value}).pipe(catchError(this._serverError));
@@ -69,8 +69,8 @@ export class FeesService {
 
   getBillInfo(){
     // console.log('data');
-    // this.feesEntryForm.value.date = formatDate(this.currentDate , 'yyyy/MM/dd', 'en');
-    this.feesEntryForm.value.date = formatDate('5/13/2021' , 'yyyy/MM/dd', 'en');
+    this.feesEntryForm.value.date = formatDate(this.currentDate , 'yyyy/MM/dd', 'en');
+    // this.feesEntryForm.value.date = formatDate('5/13/2021' , 'yyyy/MM/dd', 'en');
     console.log(this.feesEntryForm.value);
     return this.http.post(GlobalVariable.API_URL + 'getBillInfo', this.feesEntryForm.value)
       .pipe(tap( (response: {success: number, data: any}) => {

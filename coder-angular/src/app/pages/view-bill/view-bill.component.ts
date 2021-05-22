@@ -1,8 +1,12 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {BillService} from '../../services/bill.service';
 import {ToWords} from 'to-words/dist/to-words';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
 
 
 
@@ -13,8 +17,6 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./view-bill.component.scss']
 })
 export class ViewBillComponent implements OnInit {
-
-
 
   viewBillData: any[];
   showBill =  false;
@@ -92,15 +94,18 @@ export class ViewBillComponent implements OnInit {
     html2canvas(data).then(canvas => {
     // Few necessary setting options
       const imgWidth = 208 ;
-      const pageHeight = 1200 ;
-      const imgHeight = canvas.height * imgWidth / canvas.width ;
+      const pageHeight = 295;
+      // const imgHeight = canvas.height * imgWidth / canvas.width;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
       const heightLeft = imgHeight;
+      const padding = 20;
 
       const contentDataURL = canvas.toDataURL('image/jpeg');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight);
       pdf.save('bill.pdf'); // Generated PDF
+      // pdf.autoPrint();
     });
   }
 }
