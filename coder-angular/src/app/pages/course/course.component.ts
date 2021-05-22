@@ -42,6 +42,7 @@ export class CourseComponent implements OnInit {
             title: 'Success',
             text: 'Course has been added successfully',
             icon: 'success',
+            showConfirmButton: false,
             timer: 1500
           });
         }
@@ -50,6 +51,7 @@ export class CourseComponent implements OnInit {
         title: error.message,
         text: 'Course is not saved',
         icon: 'error',
+        showConfirmButton: false,
         timer: 1500
       });
     });
@@ -66,6 +68,7 @@ export class CourseComponent implements OnInit {
           title: 'Updated',
           text: 'Course is updated',
           icon: 'success',
+          showConfirmButton: false,
           timer: 1500
         });
         const index = this.courseData.findIndex(x => x.id === this.courseForm.value.id);
@@ -78,6 +81,7 @@ export class CourseComponent implements OnInit {
           title: error.message,
           text: 'Course is not updated ',
           icon: 'error',
+          showConfirmButton: false,
           timer: 1500
         });
     });
@@ -102,6 +106,7 @@ export class CourseComponent implements OnInit {
               title: 'Success',
               text: 'Course has been deleted successfully ',
               icon: 'success',
+              showConfirmButton: false,
               timer: 1500
             });
           }
@@ -111,6 +116,7 @@ export class CourseComponent implements OnInit {
               title: 'Active Course',
               text: 'Course can not be deleted ',
               icon: 'error',
+              showConfirmButton: false,
               timer: 1500
             });
           }
