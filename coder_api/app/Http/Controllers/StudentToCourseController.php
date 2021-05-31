@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StudentToCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Student;
 
 class StudentToCourseController extends Controller
 {
@@ -74,6 +75,22 @@ class StudentToCourseController extends Controller
         $result->update();
 
         return response()->json(['success'=>1,'data'=>$result],200,[],JSON_NUMERIC_CHECK);
+    }
+
+
+    public function testJoin()
+    {
+
+        $student = Student::where('id', 3)->get();
+
+        $data = DB::table('student_to_courses')
+            ->rightJoinSub($student, 'table1', function ($join) {
+                $join->on('table1.id', '=', 'student_to_courses.student_id');
+            })
+            ->get();
+
+
+        return response()->json(['success' => 1, 'data'=>$data],200,[]);
     }
     /**
      * Show the form for creating a new resource.

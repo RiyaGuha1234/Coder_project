@@ -75,6 +75,8 @@ export class CourseComponent implements OnInit {
         if (index !== -1){
           this.courseData.splice(index, 1, response.data);
         }
+        this.courseForm.reset();
+        this.showSave = true;
       }
     }, (error) => {
       Swal.fire({
@@ -88,6 +90,7 @@ export class CourseComponent implements OnInit {
   }
   clearForm(){
     this.courseForm.reset();
+    this.showSave = true;
   }
   deleteCourse(data){
     Swal.fire({

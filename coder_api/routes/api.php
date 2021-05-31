@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 Route::post('register',[UserController::class,'register']);
 Route::post('login',[UserController::class,'login']);
 
+Route::get('test',[StudentToCourseController::class,'testJoin']);
+
 //Route::get('getStudents',[StudentController::class,'getStudents']);
 //Route::post('saveStudent',[StudentController::class,'saveStudent']);
 
