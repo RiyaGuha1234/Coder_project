@@ -32,6 +32,7 @@ import { CourseComponent } from './pages/course/course.component';
 import { BillListComponent } from './pages/bill-list/bill-list.component';
 import { ViewBillComponent } from './pages/view-bill/view-bill.component';
 import { ToastrModule } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -76,7 +77,8 @@ import { ToastrModule } from 'ngx-toastr';
 
 
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true }, CookieService],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,6 +7,7 @@ import {Subject, Observable,BehaviorSubject} from 'rxjs';
 import {Router} from '@angular/router';
 import {GlobalVariable} from '../shared/GlobalVariable';
 import { ToastrService } from 'ngx-toastr';
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +21,13 @@ export class AuthService {
   public currentUser: Observable<User>;
 
 
-  constructor(private http: HttpClient, private router: Router, private toastr: ToastrService) {
+  constructor(private http: HttpClient, private router: Router, private toastr: ToastrService, private cookieService: CookieService) {
     this.loginForm = new FormGroup({
       user_name: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required]),
       rememberMe: new FormControl(false),
     });
-    console.log('rememberCurrentUser');
+
 
     // this.isRememberMe =  localStorage.getItem('rememberCurrentUser') === 'true' ? true : false;
     // if (localStorage.getItem('rememberCurrentUser') === 'true'){
@@ -50,6 +51,9 @@ export class AuthService {
   login(loginData) {
     // return this.http.post('http://127.0.0.1:8000/api/login', loginData)
     this.isRememberMe =  this.loginForm.value.rememberMe;
+    console.log('this.isRememberMe');
+    console.log(this.isRememberMe);
+    console.log(this.loginForm.value);
     return this.http.post(GlobalVariable.API_URL + 'login', loginData)
       .pipe(tap((response: { success: number, userData: any , token: any }) => {
         if (response.token !== null){
@@ -59,13 +63,17 @@ export class AuthService {
             response.token
           );
           if(this.isRememberMe){
+            console.log(' from if this.isRememberMe');
             console.log(this.isRememberMe);
             this.resetCredentials();
-            localStorage.setItem('rememberCurrentUser', 'true');
-            localStorage.setItem('userInfo', JSON.stringify(user));
+            this.cookieService.set('username', this.loginForm.value.user_name);
+            this.cookieService.set('password', this.loginForm.value.password);
+
+            // localStorage.setItem('rememberCurrentUser', 'true');
+            // localStorage.setItem('userInfo', JSON.stringify(user));
           }
           else{
-            sessionStorage.setItem('userInfo', JSON.stringify(user));
+            this.resetCredentials();
           }
           // localStorage.setItem('userInfo', JSON.stringify(user));
           this.userSub.next(user);
@@ -79,7 +87,7 @@ export class AuthService {
   logOut(){
     // localStorage.removeItem('userInfo');
     // this.userSub.next(null);
-    this.resetCredentials();
+    // this.resetCredentials();
     this.userSub.next(null);
     this.router.navigate(['/']);
   }
@@ -91,11 +99,9 @@ export class AuthService {
   }
 
   resetCredentials(){
-    // clear all localstorages
-    localStorage.removeItem('rememberCurrentUser');
-    localStorage.removeItem('currentUser');
-    sessionStorage.removeItem('currentUser');
-    // this.currentUserSubject.next(null);
+    // clear all
+    this.cookieService.delete('username');
+    this.cookieService.delete('password');
     this.userSub.next(null);
   }
 

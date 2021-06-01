@@ -6,7 +6,7 @@ export class User{
   // user_name?: string;
   // auth_token?: string;
 
-  constructor(public  id, public  user_name, public  auth_token){
+  constructor(public  id, public  user_name, public  auth_token , ){
   }
 
   isAuthenticated(){
