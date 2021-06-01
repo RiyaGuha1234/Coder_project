@@ -1,17 +1,23 @@
 <div>
   <div fxFlex="35"></div>
-  <div fxFlex="30" style="text-align: center; margin-top: 50px" [formGroup]="loginForm">
+  <div fxFlex="30" style="text-align: center; margin-top: 50px">
     <div></div>
     <mat-card style="background-color: yellowgreen;margin: 50px">
-      <mat-form-field class="col-12">
-        <input matInput placeholder="User Name" formControlName="user_name">
-      </mat-form-field>
-      <mat-form-field class="col-12">
-        <input  matInput type="password" placeholder="Password" formControlName="password">
-      </mat-form-field>
-      <div style="text-align: center">
-        <button mat-button class="btn-info" (click)="login()">login</button>
-      </div>
+      <form  [formGroup]="loginForm">
+        <mat-form-field class="col-12">
+          <input matInput placeholder="User Name" formControlName="user_name">
+        </mat-form-field>
+        <mat-form-field class="col-12">
+          <input  matInput type="password" placeholder="Password" formControlName="password">
+        </mat-form-field>
+        <div style="text-align: center">
+          <button mat-button class="btn-info" (click)="login()">login</button>
+        </div>
+        <div>
+          <input type="checkbox" id="vehicle1" name="credentials" value="true" formControlName="rememberMe">
+          <label>Remember me </label>
+        </div>
+      </form>
       <div *ngIf="errorMsg"  style="color: red">{{errorMsg}}</div>
     </mat-card>
     <div></div>

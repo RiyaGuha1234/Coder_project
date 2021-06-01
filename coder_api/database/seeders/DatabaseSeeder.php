@@ -28,7 +28,11 @@ class DatabaseSeeder extends Seeder
         Course::create(['course_name'=>'C5','course_fees'=>2080,'course_type_id'=>2]);
 
 
-        User::create(['user_name'=>'sukantahui','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
+//        User::create(['user_name'=>'sukantahui','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
+        User::create(['user_name'=>'tanu','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
+        User::create(['user_name'=>'biju','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
+        User::create(['user_name'=>'ridhhi','password'=>"81dc9bdb52d04dc20036dbd8313ed055"]);
+
 
         \App\Models\Student::factory(30)->create();
 

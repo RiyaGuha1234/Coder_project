@@ -31,6 +31,7 @@ import { PictureCarouselComponent } from './pages/owner/picture-carousel/picture
 import { CourseComponent } from './pages/course/course.component';
 import { BillListComponent } from './pages/bill-list/bill-list.component';
 import { ViewBillComponent } from './pages/view-bill/view-bill.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -70,7 +71,8 @@ import { ViewBillComponent } from './pages/view-bill/view-bill.component';
     NgxPaginationModule,
     MatFormFieldModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    ToastrModule.forRoot(), // ToastrModule added
 
 
   ],

@@ -6,12 +6,14 @@
           <h3 style="text-align: center"><u>Student Profile</u></h3>
           <form [formGroup] = studentForm >
             <div class="container" fxLayout="column" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
-            <mat-form-field>
-              <input matInput placeholder="Student Name" formControlName="student_name">
-<!--              <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">-->
-<!--                <mat-error *ngIf="studentForm.get('student_name').errors['required']">This field is Required</mat-error>-->
-<!--              </div>-->
-            </mat-form-field>
+              <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" [hidden]="showCourses">
+              <mat-form-field class="col-10">
+                <input matInput placeholder="Student Name" formControlName="student_name">
+<!--                <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">-->
+<!--                  <mat-error *ngIf="studentForm.get('contact').errors['maxLength']">Maximum length exceeded</mat-error>-->
+<!--                </div>-->
+              </mat-form-field>
+            </div>
               <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" fxLayoutGap="5px" fxLayoutGap.xs="0" [hidden]="showCourses">
               <mat-form-field class="col-10">
                 <input matInput placeholder="Contact" formControlName="contact">
@@ -56,7 +58,7 @@
 <!--              </div>-->
             </div>
             <div fxLayoutGap="15px" [hidden]="showCourses" style="text-align: center">
-              <button mat-raised-button (click)="saveStudent()"  [hidden]="!showSave">Save</button>
+              <button mat-raised-button [disabled]="studentForm.invalid" (click)="saveStudent()"  [hidden]="!showSave">Save</button>
               <button mat-raised-button [disabled]="studentForm.pristine" [hidden]="showSave" (click)="updateStudentInfo()">Update</button>
               <button mat-raised-button (click)="clearForm()" [disabled]="studentForm.pristine" [hidden]="!showSave">Clear</button>
               <button mat-raised-button (click)="clearForm()" [disabled]="!studentForm.value.student_name" [hidden]="showSave">Clear</button>

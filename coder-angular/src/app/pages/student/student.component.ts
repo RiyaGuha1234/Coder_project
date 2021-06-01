@@ -100,6 +100,7 @@ export class StudentComponent implements OnInit {
     this.studentForm.reset();
     this.studentForm.patchValue({contact: '+91', date: this.date , effective_date: this.currentDate});
     this.showAddedCourse = false;
+    this.showSave = true;
     console.log(this.studentForm.value);
 
   }
@@ -137,6 +138,8 @@ export class StudentComponent implements OnInit {
             Swal.fire('Student Data Updated', 'success', 'success');
             this.studentForm.reset();
             this.studentForm.patchValue({contact: '+91'});
+            this.studentForm.patchValue({date: this.date});
+            this.showSave = true;
           }
         }, (error) => {
           Swal.fire(error.message,

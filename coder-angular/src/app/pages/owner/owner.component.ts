@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import {AuthService} from "../../services/auth.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-owner',
@@ -7,10 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OwnerComponent implements OnInit {
 
-  constructor() { }
+  constructor( private  authservice: AuthService) { }
 
   ngOnInit(): void {
     console.log(JSON.parse(localStorage.getItem('userInfo')));
   }
+
+  showToasterSuccess(){
+
+    this.authservice.showSuccess('Data shown successfully !!', 'ItSolutionStuff.com');
+
+  }
+
+
+
 
 }
